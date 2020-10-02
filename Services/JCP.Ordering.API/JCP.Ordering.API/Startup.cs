@@ -1,3 +1,6 @@
+using System.Reflection;
+using JCP.Ordering.API.Features.Orders.Create;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,8 +19,11 @@ namespace JCP.Ordering.API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            services.AddSwagger();
+            services.AddCustomSwagger();
             services.AddControllers();
+
+            // Register all the Command classes (they implement IRequestHandler) in assembly holding the CreateOrderRequestMV
+            services.AddMediatR(typeof(CreateOrderRequestMV).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,16 +36,7 @@ namespace JCP.Ordering.API
 
             app.UseRouting();
 
-            #region Swagger
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c => {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Microservices-example");
-            });
-            #endregion
+            app.UseCustomSwagger();
 
             app.UseAuthorization();
 
