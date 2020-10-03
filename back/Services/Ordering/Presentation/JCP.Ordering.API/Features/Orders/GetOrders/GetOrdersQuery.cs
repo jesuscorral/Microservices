@@ -1,6 +1,8 @@
-﻿namespace JCP.Ordering.API.Features.Orders.GetOrders
+﻿using MediatR;
+
+namespace JCP.Ordering.API.Features.Orders.GetOrders
 {
-    public class GetOrdersQuery
+    public class GetOrdersQuery : IRequest<GetOrdersResponseDTO>
     {
     }
 }

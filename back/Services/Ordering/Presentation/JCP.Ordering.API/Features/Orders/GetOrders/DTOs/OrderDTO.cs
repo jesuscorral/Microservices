@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace JCP.Ordering.API.Features.Orders.GetOrders
 {
-    public class GetOrdersResponseMV
-    {
-        public List<OrderVM> Orders { get; set; }
-    }
-
-    public class OrderVM
+    public class OrderDTO
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

@@ -23,7 +23,7 @@ namespace JCP.Ordering.API
             services.AddControllers();
 
             // Register all the Command classes (they implement IRequestHandler) in assembly holding the CreateOrderRequestMV
-            services.AddMediatR(typeof(CreateOrderRequestMV).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(CreateOrderCommand).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

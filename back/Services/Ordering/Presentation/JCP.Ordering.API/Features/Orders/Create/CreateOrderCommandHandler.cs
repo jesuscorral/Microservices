@@ -5,11 +5,11 @@ using MediatR;
 
 namespace JCP.Ordering.API.Features.Orders.Create
 {
-    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderRequestMV, CreateOrderResponseMV>
+    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, CreateOrderResponseDTO>
     {
-        public async Task<CreateOrderResponseMV> Handle(CreateOrderRequestMV request, CancellationToken cancellationToken) 
+        public async Task<CreateOrderResponseDTO> Handle(CreateOrderCommand request, CancellationToken cancellationToken) 
         {
-            var ret = new CreateOrderResponseMV {
+            var ret = new CreateOrderResponseDTO {
                 Id = new Guid(),
                 IsSuccess = true
             };

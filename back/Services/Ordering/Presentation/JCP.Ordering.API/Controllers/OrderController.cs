@@ -22,7 +22,7 @@ namespace JCP.Ordering.API.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult CreateOrder([FromBody] CreateOrderRequestMV command) 
+        public IActionResult CreateOrder([FromBody] CreateOrderCommand command) 
         {
             var response = _mediator.Send(command);
             return Ok(response);
@@ -33,7 +33,7 @@ namespace JCP.Ordering.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetOrders() 
         {
-            var response = _mediator.Send(new GetOrdersRequestMV());
+            var response = _mediator.Send(new GetOrdersQuery());
             return Ok(response);
         }
     }

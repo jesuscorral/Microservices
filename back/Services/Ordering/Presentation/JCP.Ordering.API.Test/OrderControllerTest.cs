@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
 
+// TODO - Add negative tests
+
 namespace JCP.Ordering.API.Test
 {
     public class OrderControllerTest
@@ -22,9 +24,9 @@ namespace JCP.Ordering.API.Test
         public void Create_Order_Success() {
 
             // Arrange
-            var createrOrderRequestVM = new CreateOrderRequestMV();
-            _mediator.Setup(x => x.Send(It.IsAny<CreateOrderRequestMV>(), new CancellationToken())).
-                ReturnsAsync(new CreateOrderResponseMV { IsSuccess = true, Id = Guid.NewGuid() });
+            var createrOrderRequestVM = new CreateOrderCommand();
+            _mediator.Setup(x => x.Send(It.IsAny<CreateOrderCommand>(), new CancellationToken())).
+                ReturnsAsync(new CreateOrderResponseDTO { IsSuccess = true, Id = Guid.NewGuid() });
             var orderController = new OrderController(_mediator.Object);
 
             // Act
@@ -37,9 +39,9 @@ namespace JCP.Ordering.API.Test
         [Fact]
         public void Get_Orders_Success() {
             // Arrange
-            var getOrdersRequestModel = new GetOrdersRequestMV();
-            _mediator.Setup(x => x.Send(It.IsAny<GetOrdersRequestMV>(), new CancellationToken()))
-                .ReturnsAsync(new GetOrdersResponseMV());
+            var getOrdersRequestModel = new GetOrdersQuery();
+            _mediator.Setup(x => x.Send(It.IsAny<GetOrdersQuery>(), new CancellationToken()))
+                .ReturnsAsync(new GetOrdersResponseDTO());
 
             var orderController = new OrderController(_mediator.Object);
             // Act
