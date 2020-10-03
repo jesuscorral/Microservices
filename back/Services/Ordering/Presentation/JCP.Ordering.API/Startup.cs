@@ -24,6 +24,9 @@ namespace JCP.Ordering.API
 
             // Register all the Command classes (they implement IRequestHandler) in assembly holding the CreateOrderRequestMV
             services.AddMediatR(typeof(CreateOrderCommand).GetTypeInfo().Assembly);
+
+            // Register the persistence with entityframeworkCore with Azure Cosmos DB
+            services.AddCosmosBDPersistence(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

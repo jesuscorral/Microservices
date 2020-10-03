@@ -2,9 +2,9 @@
 {
     public class OrderItem
     {
-        private string _productName;
-        private decimal _unitPrice;
-        private decimal _discount;
-        private int _units;
+        public string ProductName;
+        public decimal UnitPrice;
+        public decimal Discount;
+        public int Units;
     }
 }

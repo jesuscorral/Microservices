@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JCP.Ordering.Domain\JCP.Ordering.Domain.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="3.1.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\JCP.Ordering.Domain\JCP.Ordering.Domain.csproj" />
   </ItemGroup>
 
 </Project>

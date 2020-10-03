@@ -14,7 +14,6 @@ namespace JCP.Ordering.API.Controllers
     {
         private readonly IMediator _mediator;
 
-
         public OrderController(IMediator mediator) {
             _mediator = mediator ?? throw new ArgumentNullException();
         }
@@ -22,10 +21,21 @@ namespace JCP.Ordering.API.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult CreateOrder([FromBody] CreateOrderCommand command) 
+        public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command) 
         {
-            var response = _mediator.Send(command);
-            return Ok(response);
+            // TODO -- Add unit test for this validation
+            if (!ModelState.IsValid) {
+                return BadRequest();
+            }
+
+            var response = await _mediator.Send(command);
+
+            if (!response) 
+            {
+                return BadRequest();
+            }
+
+            return Ok();
         }
 
         [HttpGet]
