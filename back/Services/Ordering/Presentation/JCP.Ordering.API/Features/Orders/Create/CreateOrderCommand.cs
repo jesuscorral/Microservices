@@ -8,22 +8,20 @@ namespace JCP.Ordering.API.Features.Orders.Create
 {
     public class CreateOrderCommand: IRequest<bool>
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
-        public DateTime Date { get; set; }
         public double Amount { get; set; }
         public List<OrderItemDTO> OrderItems { get; set; }
 
         public CreateOrderCommand() { }
 
-        public void Bind(Order entity) {
-            entity.Name = this.Name;
-            entity.Amount = this.Amount;
-            entity.Date = this.Date;
-            entity.OrderItems = BuidlOrderItems(entity.OrderItems);
-        }
+        //public void Bind(Order entity) {
+        //    entity.Name = this.Name;
+        //    entity.Amount = this.Amount;
+        //    entity.Date = DateTime.UtcNow;
+        //    //entity.OrderItems = BuidlOrderItems(this.OrderItems);
+        //}
 
-        private List<OrderItem> BuidlOrderItems(List<OrderItem> orderItems) {
+        private List<OrderItem> BuidlOrderItems(List<OrderItemDTO> orderItems) {
             var ret = new List<OrderItem>();
             orderItems?.ToList().ForEach(x => {
                 ret.Add(new OrderItem { 

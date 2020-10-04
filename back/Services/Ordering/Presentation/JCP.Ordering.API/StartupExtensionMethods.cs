@@ -29,6 +29,18 @@ namespace JCP.Ordering.API
                     Configuration["CosmosDb:PrimaryKey"],
                     Configuration["CosmosDb:DbName"]);
             });
+            //this.cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "CosmosDBDotnetQuickstart" });
+
+            //this.database = await this.cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
+
+            //this.container = await this.database.CreateContainerIfNotExistsAsync(containerId, "/Name", 400);
+
+
+            //ItemResponse<Order> wakefieldFamilyResponse = await this.container.CreateItemAsync<Order>(order, new PartitionKey(order.Name));
+
+            //// Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
+            //Console.WriteLine("Created item in database with id: {0} Operation consumed {1} RUs.\n", wakefieldFamilyResponse.Resource.Id, wakefieldFamilyResponse.RequestCharge);
+
 
             return services;
         }

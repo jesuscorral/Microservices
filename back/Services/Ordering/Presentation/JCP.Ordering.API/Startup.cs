@@ -1,5 +1,6 @@
 using System.Reflection;
 using JCP.Ordering.API.Features.Orders.Create;
+using JCP.Ordering.Domain.SeedWork;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,9 @@ namespace JCP.Ordering.API
 
             // Register the persistence with entityframeworkCore with Azure Cosmos DB
             services.AddCosmosBDPersistence(Configuration);
+
+            services.AddScoped<IDomainEventsConsumer, PersisterDomainEventsConsumer>();
+            services.AddScoped<IEventStore, InMemoryEventStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
