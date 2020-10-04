@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using MediatR;
 
 namespace JCP.Ordering.Domain.SeedWork
 {
@@ -21,39 +18,43 @@ namespace JCP.Ordering.Domain.SeedWork
             }
         }
 
-        private readonly DomainEventApplierRegistry _domainEventApplierRegistry;
-        private readonly IList<IDomainEvent> _domainEvents;
+        //private readonly DomainEventApplierRegistry _domainEventApplierRegistry;
+        private List<INotification> _domainEvents;
+        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
 
-        protected AggregateRoot() {
-            //Id = id;
+        //protected AggregateRoot() {
+        //    //Id = id;
 
-            _domainEventApplierRegistry = new DomainEventApplierRegistry();
-            _domainEvents = new List<IDomainEvent>();
+        //    _domainEventApplierRegistry = new DomainEventApplierRegistry();
+        //    _domainEvents = new List<INotification>();
 
-            // ReSharper disable once VirtualMemberCallInConstructor
-            RegisterDomainEventAppliers();
-        }
+        //    // ReSharper disable once VirtualMemberCallInConstructor
+        //    RegisterDomainEventAppliers();
+        //}
 
-        protected void AddDomainEvent(IDomainEvent domainEvent) {
-            var applier = _domainEventApplierRegistry.Find(domainEvent);
-            applier.Invoke(domainEvent);
+        protected void AddDomainEvent(INotification domainEvent) {
+            //var applier = _domainEventApplierRegistry.Find(domainEvent);
+            //applier.Invoke(domainEvent);
 
+            //_domainEvents.Add(domainEvent);
+
+            _domainEvents = _domainEvents ?? new List<INotification>();
             _domainEvents.Add(domainEvent);
         }
 
-        protected abstract void RegisterDomainEventAppliers();
+        //protected abstract void RegisterDomainEventAppliers();
 
-        protected void RegisterDomainEventApplier<TDomainEvent>(Action<TDomainEvent> applier)
-           where TDomainEvent : class, IDomainEvent {
-            _domainEventApplierRegistry.Register(applier);
-        }
+        //protected void RegisterDomainEventApplier<TDomainEvent>(Action<TDomainEvent> applier)
+        //   where TDomainEvent : class, IDomainEvent {
+        //    _domainEventApplierRegistry.Register(applier);
+        //}
 
-        public void ConsumeDomainEventChanges(IDomainEventsConsumer domainEventsConsumer) {
-            if (!_domainEvents.Any()) {
-                return;
-            }
-            domainEventsConsumer.Consume(this, _domainEvents);
-            _domainEvents.Clear();
-        }
+        //public void ConsumeDomainEventChanges(IDomainEventsConsumer domainEventsConsumer) {
+        //    if (!_domainEvents.Any()) {
+        //        return;
+        //    }
+        //    domainEventsConsumer.Consume(this, _domainEvents);
+        //    _domainEvents.Clear();
+        //}
     }
 }

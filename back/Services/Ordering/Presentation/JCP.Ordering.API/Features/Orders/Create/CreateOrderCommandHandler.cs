@@ -26,7 +26,7 @@ namespace JCP.Ordering.API.Features.Orders.Create
         {
             var order = new Order(Guid.NewGuid(), "Name");
            
-            order.ConsumeDomainEventChanges(_domainEventsConsumer);
+            //order.ConsumeDomainEventChanges(_domainEventsConsumer);
 
             return true;
 

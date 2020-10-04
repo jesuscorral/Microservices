@@ -5,7 +5,7 @@ using MediatR;
 
 namespace JCP.Ordering.Domain.DomainEvents
 {
-    public class OrderCreatedEvent : IDomainEvent
+    public class OrderCreatedEvent : INotification
     {
         public Guid AggregateId { get; }
         public string Name { get; }

@@ -22,12 +22,12 @@ namespace JCP.Ordering.Domain.AggregatesModel.OrderAggregate
             AddDomainEvent(orderCreatedEvent);
         }
 
-        protected override void RegisterDomainEventAppliers() {
-            RegisterDomainEventApplier<OrderCreatedEvent>(Applier);
-        }
+        //protected override void RegisterDomainEventAppliers() {
+        //    RegisterDomainEventApplier<OrderCreatedEvent>(Applier);
+        //}
 
-        private void Applier(OrderCreatedEvent productCreated) {
-            _name = productCreated.Name;
-        }
+        //private void Applier(OrderCreatedEvent productCreated) {
+        //    _name = productCreated.Name;
+        //}
     }
 }
