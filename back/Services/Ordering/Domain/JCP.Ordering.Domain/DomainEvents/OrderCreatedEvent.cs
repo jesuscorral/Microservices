@@ -5,12 +5,12 @@ using MediatR;
 
 namespace JCP.Ordering.Domain.DomainEvents
 {
-    public class OrderCreated : IDomainEvent
+    public class OrderCreatedEvent : IDomainEvent
     {
         public Guid AggregateId { get; }
         public string Name { get; }
 
-        public OrderCreated(Guid aggregateId, string name) {
+        public OrderCreatedEvent(Guid aggregateId, string name) {
             AggregateId = aggregateId;
             Name = name;
         }

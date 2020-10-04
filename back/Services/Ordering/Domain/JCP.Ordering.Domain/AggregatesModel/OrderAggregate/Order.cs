@@ -13,21 +13,20 @@ namespace JCP.Ordering.Domain.AggregatesModel.OrderAggregate
         private readonly DateTime _date;
         private readonly double _amount;
         private readonly List<OrderItem> _orderItems;
-        public Order(Guid id, string name)
-           : base(id) {
-            var productCreated = new OrderCreated(id, name);
-            ApplyDomainEvent(productCreated);
-        }
 
-        public Order(Guid id, IEnumerable<IDomainEvent> domainEvents)
-            : base(id, domainEvents) {
+        public Order(Guid id, string name) {
+            _name = name;
+            var orderCreatedEvent = new OrderCreatedEvent
+                (id, name);
+
+            AddDomainEvent(orderCreatedEvent);
         }
 
         protected override void RegisterDomainEventAppliers() {
-            RegisterDomainEventApplier<OrderCreated>(Applier);
+            RegisterDomainEventApplier<OrderCreatedEvent>(Applier);
         }
 
-        private void Applier(OrderCreated productCreated) {
+        private void Applier(OrderCreatedEvent productCreated) {
             _name = productCreated.Name;
         }
     }

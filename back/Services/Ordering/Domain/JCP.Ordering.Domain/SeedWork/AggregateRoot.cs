@@ -8,39 +8,37 @@ namespace JCP.Ordering.Domain.SeedWork
 {
     public abstract class AggregateRoot
     {
-        private readonly DomainEventApplierRegistry _domainEventApplierRegistry;
-        private readonly IList<IDomainEvent> _changes;
-        public Guid Id { get; set; }
-        public int Version { get; private set; }
+        int _Id;
+        public virtual int Id
+        {
+            get
+            {
+                return _Id;
+            }
+            protected set
+            {
+                _Id = value;
+            }
+        }
 
-        protected AggregateRoot(Guid id) {
-            Id = id;
+        private readonly DomainEventApplierRegistry _domainEventApplierRegistry;
+        private readonly IList<IDomainEvent> _domainEvents;
+
+        protected AggregateRoot() {
+            //Id = id;
 
             _domainEventApplierRegistry = new DomainEventApplierRegistry();
-            _changes = new List<IDomainEvent>();
+            _domainEvents = new List<IDomainEvent>();
 
             // ReSharper disable once VirtualMemberCallInConstructor
             RegisterDomainEventAppliers();
         }
 
-        protected AggregateRoot(Guid id, IEnumerable<IDomainEvent> domainEvents)
-             : this(id) {
-            foreach (var domainEvent in domainEvents) {
-                ApplyDomainEvent(domainEvent, true);
-            }
-        }
-
-        protected void ApplyDomainEvent(IDomainEvent domainEvent, bool isPrevious = false) {
+        protected void AddDomainEvent(IDomainEvent domainEvent) {
             var applier = _domainEventApplierRegistry.Find(domainEvent);
             applier.Invoke(domainEvent);
 
-            Version++;
-
-            if (isPrevious) {
-                return;
-            }
-
-            _changes.Add(domainEvent);
+            _domainEvents.Add(domainEvent);
         }
 
         protected abstract void RegisterDomainEventAppliers();
@@ -51,11 +49,11 @@ namespace JCP.Ordering.Domain.SeedWork
         }
 
         public void ConsumeDomainEventChanges(IDomainEventsConsumer domainEventsConsumer) {
-            if (!_changes.Any()) {
+            if (!_domainEvents.Any()) {
                 return;
             }
-            domainEventsConsumer.Consume(this, _changes);
-            _changes.Clear();
+            domainEventsConsumer.Consume(this, _domainEvents);
+            _domainEvents.Clear();
         }
     }
 }
