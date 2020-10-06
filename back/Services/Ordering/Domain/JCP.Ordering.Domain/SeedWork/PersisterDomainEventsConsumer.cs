@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MediatR;
 
 namespace JCP.Ordering.Domain.SeedWork
 {
@@ -10,7 +11,7 @@ namespace JCP.Ordering.Domain.SeedWork
             _eventStore = eventStore;
         }
 
-        public void Consume(AggregateRoot aggregateRoot, IEnumerable<IDomainEvent> domainEvents) {
+        public void Consume(AggregateRoot aggregateRoot, IEnumerable<INotification> domainEvents) {
             _eventStore.PersistEvents(aggregateRoot.Id.ToString(), domainEvents);
         }
     }

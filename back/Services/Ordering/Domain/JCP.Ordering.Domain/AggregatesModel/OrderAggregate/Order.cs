@@ -14,20 +14,20 @@ namespace JCP.Ordering.Domain.AggregatesModel.OrderAggregate
         private readonly double _amount;
         private readonly List<OrderItem> _orderItems;
 
-        public Order(Guid id, string name) {
+        public Order(Guid id, string name) : base(id) {
             _name = name;
-            var orderCreatedEvent = new OrderCreatedEvent
-                (id, name);
+            var orderCreatedEvent = new OrderCreatedEvent(id, name);
 
             AddDomainEvent(orderCreatedEvent);
         }
 
-        //protected override void RegisterDomainEventAppliers() {
-        //    RegisterDomainEventApplier<OrderCreatedEvent>(Applier);
-        //}
 
-        //private void Applier(OrderCreatedEvent productCreated) {
-        //    _name = productCreated.Name;
-        //}
+        protected override void RegisterDomainEventAppliers() {
+            RegisterDomainEventApplier<OrderCreatedEvent>(Applier);
+        }
+
+        private void Applier(OrderCreatedEvent productCreated) {
+            _name = productCreated.Name;
+        }
     }
 }

@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MediatR;
 
 namespace JCP.Ordering.Domain.SeedWork
 {
     public class InMemoryEventStore : IEventStore
     {
-        private readonly IDictionary<string, IList<IDomainEvent>> _streams =
-            new Dictionary<string, IList<IDomainEvent>>();
+        private readonly IDictionary<string, IList<INotification>> _streams =
+            new Dictionary<string, IList<INotification>>();
 
-        public IEnumerable<IDomainEvent> GetEvents(string streamName) {
+        public IEnumerable<INotification> GetEvents(string streamName) {
             return _streams[streamName];
         }
 
         // TODO - Sustituir por Cosmos DB
-        public void PersistEvents(string streamName, IEnumerable<IDomainEvent> domainEvents) {
+        public void PersistEvents(string streamName, IEnumerable<INotification> domainEvents) {
             var isExisting = _streams.TryGetValue(streamName, out var storedEvents);
             if (!isExisting) {
                 _streams.Add(streamName, domainEvents.ToList());

@@ -24,7 +24,8 @@ namespace JCP.Ordering.Infrastructure.Context
         protected async Task<int> SaveChangesAsync()
         {
             return await base.SaveChangesAsync();
-          
+
+
         }
 
         public DbSet<Order> Orders { get; set; }
@@ -34,14 +35,14 @@ namespace JCP.Ordering.Infrastructure.Context
             modelBuilder.HasDefaultContainer(CONTAINER_NAME);
             modelBuilder.Entity<Order>().ToContainer(nameof(Order));
             //modelBuilder.Entity<Order>().HasPartitionKey(o => o.Name);
-            modelBuilder.Entity<Order>().Property(p => p.Id).HasValueGenerator<GuidValueGenerator>();
+            //modelBuilder.Entity<Order>().Property(p => p.Id).HasValueGenerator<GuidValueGenerator>();
             //modelBuilder.Entity<Order>().HasMany<OrderItem>(p => p.OrderItems);
 
-            modelBuilder.Entity<Order>(entity =>
-            {
-                entity.HasKey(e => e.Id);
+            //modelBuilder.Entity<Order>(entity =>
+            //{
+            //    entity.HasKey(e => e.Id);
 
-            });
+            //});
 
         }
         // TODO - Implementar para no tener que meter cabeceras en los Objetos de dominio

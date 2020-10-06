@@ -1,6 +1,4 @@
 ﻿using System;
-using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
-using JCP.Ordering.Domain.SeedWork;
 using MediatR;
 
 namespace JCP.Ordering.Domain.DomainEvents

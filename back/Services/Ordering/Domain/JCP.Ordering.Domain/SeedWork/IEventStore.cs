@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using MediatR;
 
 namespace JCP.Ordering.Domain.SeedWork
 {
     public interface IEventStore
     {
-        IEnumerable<IDomainEvent> GetEvents(string streamName);
-        void PersistEvents(string streamName, IEnumerable<IDomainEvent> domainEvents);
+        IEnumerable<INotification> GetEvents(string streamName);
+        void PersistEvents(string streamName, IEnumerable<INotification> domainEvents);
     }
 }
