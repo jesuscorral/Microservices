@@ -13,4 +13,8 @@
     <ProjectReference Include="..\..\Domain\JCP.Ordering.Domain\JCP.Ordering.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>

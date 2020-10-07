@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JCP.Ordering.Domain.SeedWork;
 using MediatR;
 
-namespace JCP.Ordering.Domain.SeedWork
+namespace JCP.Ordering.Infrastructure.Context
 {
-    public class InMemoryEventStore : IEventStore
+    public class OrderingContextCosmosDb : IEventStore
     {
         private readonly IDictionary<string, IList<INotification>> _streams =
             new Dictionary<string, IList<INotification>>();

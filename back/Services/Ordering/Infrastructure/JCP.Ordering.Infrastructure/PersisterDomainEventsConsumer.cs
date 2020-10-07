@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using JCP.Ordering.Domain.SeedWork;
 using MediatR;
 
-namespace JCP.Ordering.Domain.SeedWork
+namespace JCP.Ordering.Infrastructure
 {
     public class PersisterDomainEventsConsumer : IDomainEventsConsumer
     {

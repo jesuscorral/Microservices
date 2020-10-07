@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using MediatR;
-using Newtonsoft.Json;
 
 namespace JCP.Ordering.Domain.SeedWork
 {
@@ -33,21 +32,6 @@ namespace JCP.Ordering.Domain.SeedWork
             // Registra el evento
             RegisterDomainEventAppliers();
         }
-
-        //private readonly DomainEventApplierRegistry _domainEventApplierRegistry;
-        
-        //public IReadOnlyCollection<INotification> DomainEvents => _domainEventsListChanges?.AsReadOnly();
-        
-
-        //protected AggregateRoot() {
-        //    //Id = id;
-
-        //    _domainEventApplierRegistry = new DomainEventApplierRegistry();
-        //    _domainEvents = new List<INotification>();
-
-        //    // ReSharper disable once VirtualMemberCallInConstructor
-        //    RegisterDomainEventAppliers();
-        //}
 
         protected void AddDomainEvent(INotification domainEvent)
         {
