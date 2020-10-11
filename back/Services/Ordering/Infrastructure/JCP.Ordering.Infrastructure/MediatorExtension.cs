@@ -17,31 +17,31 @@ namespace JCP.Ordering.Infrastructure
 
 
         // TODO - Hacer generico el ctx para que acepte cualquier repositorio que herede de IRepository
-        public static async Task DispatchDomainEventsAsync(this IMediator mediator, OrderRepository ctx)
-        {
-            var cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "CosmosDBDotnetQuickstart" });
-            Database database = await cosmosClient.CreateDatabaseIfNotExistsAsync("db");
-            Container container = await database.CreateContainerIfNotExistsAsync("items", "/Name", 400);
+        //public static async Task DispatchDomainEventsAsync(this IMediator mediator, OrderRepository ctx)
+        //{
+        //    var cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "CosmosDBDotnetQuickstart" });
+        //    Database database = await cosmosClient.CreateDatabaseIfNotExistsAsync("db");
+        //    Container container = await database.CreateContainerIfNotExistsAsync("items", "/Name", 400);
 
-            var domainEvents = ctx.DomainEvents;
-            //var domainEntities = ctx.ChangeTracker
-            //    .Entries<AggregateRoot>()
-            //    .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any());
+        //    var domainEvents = ctx.DomainEvents;
+        //    //var domainEntities = ctx.ChangeTracker
+        //    //    .Entries<AggregateRoot>()
+        //    //    .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any());
 
-            //var domainEvents = domainEntities
-            //    .SelectMany(x => x.Entity.DomainEvents)
-            //    .ToList();
+        //    //var domainEvents = domainEntities
+        //    //    .SelectMany(x => x.Entity.DomainEvents)
+        //    //    .ToList();
 
-            //domainEntities.ToList()
-            //    .ForEach(entity => entity.Entity.ClearDomainEvents());
-            var t = (OrderCreatedEvent)domainEvents.FirstOrDefault();
+        //    //domainEntities.ToList()
+        //    //    .ForEach(entity => entity.Entity.ClearDomainEvents());
+        //    var t = (OrderCreatedEvent)domainEvents.FirstOrDefault();
 
-            var andersenFamilyResponse = await container.CreateItemAsync<OrderCreatedEvent>(t);
+        //    var andersenFamilyResponse = await container.CreateItemAsync<OrderCreatedEvent>(t);
 
 
 
-            foreach (var domainEvent in domainEvents)
-                await mediator.Publish(domainEvent);
-        }
+        //    foreach (var domainEvent in domainEvents)
+        //        await mediator.Publish(domainEvent);
+        //}
     }
 }

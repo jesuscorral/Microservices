@@ -3,9 +3,10 @@ using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
 
 namespace JCP.Ordering.Domain.DomainEvents
 {
-    public class OrderCreatedEvent : BaseEvent
+    public class OrderCreatedEvent : IDomainEvent
     {
         public Order Order { get; }
+        public Guid EventId { get; }
 
         public OrderCreatedEvent(Guid id, Order order)
         {

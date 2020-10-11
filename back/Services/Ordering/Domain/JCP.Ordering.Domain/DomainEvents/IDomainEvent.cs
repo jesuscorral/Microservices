@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 
 namespace JCP.Ordering.Domain.DomainEvents
 {
-    public abstract class BaseEvent : INotification
+    public interface IDomainEvent : INotification
     {
         [JsonProperty(PropertyName = "id")]
-        public Guid EventId { get; set; }
+        Guid EventId { get; }
     }
 }

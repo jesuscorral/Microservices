@@ -1,7 +1,14 @@
-﻿namespace JCP.Ordering.Domain.SeedWork
+﻿using System.Threading.Tasks;
+using JCP.Ordering.Domain.DomainEvents;
+
+namespace JCP.Ordering.Domain.SeedWork
 {
-    public interface IRepository<T> where T : IAggregateRoot
+    public interface IRepository<T> where T : IDomainEvent
     {
-        //IUnitOfWork UnitOfWork { get; }
+        Task<T> AddDomainEvent(T domainEvent);
+
+        Task<bool> SaveEntities();
+
+        void ClearDomainEvents();
     }
 }

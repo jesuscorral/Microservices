@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
 using JCP.Ordering.Domain.DomainEvents;
-using JCP.Ordering.Domain.SeedWork;
 using MediatR;
 
 namespace JCP.Ordering.API.Features.Orders.Create
@@ -21,9 +20,10 @@ namespace JCP.Ordering.API.Features.Orders.Create
             var order = new Order(request.Name, request.Amount, request.BuidlOrderItems(request.OrderItems));
 
             var t = new OrderCreatedEvent(Guid.NewGuid(), order);
-           
-            _orderRepository.AddDomainEvent(t);
-            return await _orderRepository.SaveEntitiesAsync(cancellationToken);
+          
+            await _orderRepository.AddDomainEvent(t);
+
+            return await _orderRepository.SaveEntities();
         }
     }
 }

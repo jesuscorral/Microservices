@@ -1,42 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
+﻿using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
 using JCP.Ordering.Domain.DomainEvents;
 using MediatR;
 
 namespace JCP.Ordering.Infrastructure.Repositories
 {
-    public class OrderRepository : IOrderRepository
+    public class OrderRepository : CosmosDbRepository<IDomainEvent>, IOrderRepository
     {
-        private readonly IMediator _mediator;
+        public  string CollectionName { get; } = "todoItems";
 
-        public OrderRepository(IMediator mediator)
-        {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        public OrderRepository(IMediator mediator) : base(mediator) { }
 
-        }
+        //    private readonly IMediator _mediator;
 
-        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
-        {
-            await _mediator.DispatchDomainEventsAsync(this);
+        //    public OrderRepository(IMediator mediator)
+        //    {
+        //        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
-            return true;
-        }
+        //    }
 
-        private List<BaseEvent> _domainEvents;
-        public IReadOnlyCollection<BaseEvent> DomainEvents => _domainEvents?.AsReadOnly();
+        //    //public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
+        //    //{
+        //    //    await _mediator.DispatchDomainEventsAsync(this);
 
-        public void AddDomainEvent(BaseEvent domainEvent)
-        {
-            _domainEvents = _domainEvents ?? new List<BaseEvent>();
-            _domainEvents.Add(domainEvent);
-        }
+        //    //    return true;
+        //    //}
 
-        public void ClearDomainEvents()
-        {
-            _domainEvents?.Clear();
-        }
+        //    private List<BaseEvent> _domainEvents;
+        //    public IReadOnlyCollection<BaseEvent> DomainEvents => _domainEvents?.AsReadOnly();
+
+        //    public void AddDomainEvent(BaseEvent domainEvent)
+        //    {
+        //        _domainEvents = _domainEvents ?? new List<BaseEvent>();
+        //        _domainEvents.Add(domainEvent);
+        //    }
+
+        //    public void ClearDomainEvents()
+        //    {
+        //        _domainEvents?.Clear();
+        //    }
+
+        //    public Task<Order> AddDomainEvent(Order order)
+        //    {
+
+        //        var domainEvent = new OrderCreatedEvent(Guid.NewGuid(), order);
+
+        //        throw new NotImplementedException();
+        //    }
+
+        //    public Task<T> AddDomainEvent(T domainEvent)
+        //    {
+        //        throw new NotImplementedException();
+        //    }
+
+        //    public Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken)
+        //    {
+        //        throw new NotImplementedException();
+        //    }
     }
 }
