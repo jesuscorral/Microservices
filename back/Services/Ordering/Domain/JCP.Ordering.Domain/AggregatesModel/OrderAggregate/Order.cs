@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using JCP.Ordering.Domain.DomainEvents;
 using JCP.Ordering.Domain.SeedWork;
-using Newtonsoft.Json;
 
 namespace JCP.Ordering.Domain.AggregatesModel.OrderAggregate
 {

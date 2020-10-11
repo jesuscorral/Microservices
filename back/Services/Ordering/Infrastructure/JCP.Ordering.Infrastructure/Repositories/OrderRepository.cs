@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
-using JCP.Ordering.Domain.SeedWork;
+using JCP.Ordering.Domain.DomainEvents;
 using MediatR;
 
 namespace JCP.Ordering.Infrastructure.Repositories
@@ -18,8 +18,6 @@ namespace JCP.Ordering.Infrastructure.Repositories
 
         }
 
-        //public IUnitOfWork UnitOfWork => throw new NotImplementedException();
-
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
         {
             await _mediator.DispatchDomainEventsAsync(this);
@@ -27,12 +25,12 @@ namespace JCP.Ordering.Infrastructure.Repositories
             return true;
         }
 
-        private List<INotification> _domainEvents;
-        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+        private List<BaseEvent> _domainEvents;
+        public IReadOnlyCollection<BaseEvent> DomainEvents => _domainEvents?.AsReadOnly();
 
-        public void AddDomainEvent(INotification domainEvent)
+        public void AddDomainEvent(BaseEvent domainEvent)
         {
-            _domainEvents = _domainEvents ?? new List<INotification>();
+            _domainEvents = _domainEvents ?? new List<BaseEvent>();
             _domainEvents.Add(domainEvent);
         }
 

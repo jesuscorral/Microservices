@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using JCP.Ordering.Domain.DomainEvents;
 using JCP.Ordering.Domain.SeedWork;
-using MediatR;
 
 namespace JCP.Ordering.Domain.AggregatesModel.OrderAggregate
 {
@@ -9,7 +9,7 @@ namespace JCP.Ordering.Domain.AggregatesModel.OrderAggregate
     {
         Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken);
 
-        void AddDomainEvent(INotification domainEvent);
+        void AddDomainEvent(BaseEvent domainEvent);
 
         void ClearDomainEvents();
 

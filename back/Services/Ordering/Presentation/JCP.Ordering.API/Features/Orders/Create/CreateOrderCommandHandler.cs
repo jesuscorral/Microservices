@@ -24,7 +24,6 @@ namespace JCP.Ordering.API.Features.Orders.Create
            
             _orderRepository.AddDomainEvent(t);
             return await _orderRepository.SaveEntitiesAsync(cancellationToken);
-
         }
     }
 }
