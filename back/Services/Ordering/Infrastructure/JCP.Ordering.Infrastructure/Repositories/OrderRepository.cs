@@ -6,7 +6,7 @@ namespace JCP.Ordering.Infrastructure.Repositories
 {
     public class OrderRepository : CosmosDbRepository<IDomainEvent>, IOrderRepository
     {
-        public  string CollectionName { get; } = "todoItems";
+        public override string CollectionName { get; } = "todoItems";
 
         public OrderRepository(IMediator mediator) : base(mediator) { }
 

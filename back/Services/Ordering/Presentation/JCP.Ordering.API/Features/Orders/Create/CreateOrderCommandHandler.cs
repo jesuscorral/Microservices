@@ -21,7 +21,7 @@ namespace JCP.Ordering.API.Features.Orders.Create
 
             var t = new OrderCreatedEvent(Guid.NewGuid(), order);
           
-            await _orderRepository.AddDomainEvent(t);
+            _orderRepository.AddDomainEvent(t);
 
             return await _orderRepository.SaveEntities();
         }

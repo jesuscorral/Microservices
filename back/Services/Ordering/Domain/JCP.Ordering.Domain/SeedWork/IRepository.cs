@@ -5,7 +5,9 @@ namespace JCP.Ordering.Domain.SeedWork
 {
     public interface IRepository<T> where T : IDomainEvent
     {
-        Task<T> AddDomainEvent(T domainEvent);
+        string CollectionName { get; }
+
+        void AddDomainEvent(T domainEvent);
 
         Task<bool> SaveEntities();
 
