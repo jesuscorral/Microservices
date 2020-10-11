@@ -6,28 +6,26 @@ using Newtonsoft.Json;
 
 namespace JCP.Ordering.Domain.AggregatesModel.OrderAggregate
 {
-    // TODO - Crear "Audit.cs" como base de la que hereden todas las entidades con la fecha de creacion
-    public class Order : AggregateRoot
+    public class Order : IAggregateRoot
     {
-        private string _name;
-        private readonly DateTime _date;
-        private readonly double _amount;
-        private readonly List<OrderItem> _orderItems;
-
-        public Order(Guid id, string name) : base(id) {
-            _name = name;
-            var orderCreatedEvent = new OrderCreatedEvent(id, name);
-
-            AddDomainEvent(orderCreatedEvent);
+        public Guid id;
+        public string orderName;
+        public DateTime _date;
+        public double _amount;
+        public List<OrderItem> _orderItems;
+        
+        public Order(string name, double amount, List<OrderItem> orderItems)
+        {
+            id = Guid.NewGuid();
+            orderName = name;
+            _amount = amount;
+            _orderItems = orderItems;
+            _date = DateTime.UtcNow;
         }
 
-
-        protected override void RegisterDomainEventAppliers() {
-            RegisterDomainEventApplier<OrderCreatedEvent>(Applier);
-        }
-
-        private void Applier(OrderCreatedEvent productCreated) {
-            _name = productCreated.Name;
-        }
+        //public void AddOrder()
+        //{
+        //    AddDomainEvent(new OrderCreatedEvent(this));
+        //}
     }
 }

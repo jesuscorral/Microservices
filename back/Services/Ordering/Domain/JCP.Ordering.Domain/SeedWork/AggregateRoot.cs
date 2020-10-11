@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MediatR;
+using Newtonsoft.Json;
 
 namespace JCP.Ordering.Domain.SeedWork
 {
     public abstract class AggregateRoot
     {
+        //private List<INotification> _domainEvents;
+        //public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+
         private Guid _Id;
-        private readonly DomainEventApplierRegistry _domainEventApplierRegistry;
-        private List<INotification> _domainEventsListChanges;
-        //[JsonProperty(PropertyName = "id")]
+        [JsonProperty(PropertyName = "id")]
         public virtual Guid Id
         {
             get
@@ -23,38 +22,15 @@ namespace JCP.Ordering.Domain.SeedWork
             }
         }
 
-        protected AggregateRoot(Guid id) 
-        {
-            _Id = id;
-            _domainEventApplierRegistry = new DomainEventApplierRegistry();
-            _domainEventsListChanges = new List<INotification>();
+        //protected void AddDomainEvent(INotification domainEvent)
+        //{
+        //    _domainEvents = _domainEvents ?? new List<INotification>();
+        //    _domainEvents.Add(domainEvent);
+        //}
 
-            // Registra el evento
-            RegisterDomainEventAppliers();
-        }
-
-        protected void AddDomainEvent(INotification domainEvent)
-        {
-            var applier = _domainEventApplierRegistry.Find(domainEvent);
-            applier.Invoke(domainEvent);
-
-            _domainEventsListChanges.Add(domainEvent);
-        }
-
-        protected abstract void RegisterDomainEventAppliers();
-
-        protected void RegisterDomainEventApplier<TDomainEvent>(Action<TDomainEvent> applier)
-           where TDomainEvent : class, INotification 
-        {
-            _domainEventApplierRegistry.Register(applier);
-        }
-
-        public void ConsumeDomainEventChanges(IDomainEventsConsumer domainEventsConsumer) {
-            if (!_domainEventsListChanges.Any()) {
-                return;
-            }
-            domainEventsConsumer.Consume(this, _domainEventsListChanges);
-            _domainEventsListChanges.Clear();
-        }
+        //public void ClearDomainEvents()
+        //{
+        //    _domainEvents?.Clear();
+        //}
     }
 }

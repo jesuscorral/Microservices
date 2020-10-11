@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JCP.Ordering.API.Test", "Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JCP.Ordering.API", "Services\Ordering\Presentation\JCP.Ordering.API\JCP.Ordering.API.csproj", "{8E55899A-EA6C-4B23-9F8E-23708B283EAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCP.Ordering.Infrastructure", "Services\Ordering\Infrastructure\JCP.Ordering.Infrastructure\JCP.Ordering.Infrastructure.csproj", "{F25F6620-AC96-46DD-B305-AAAF9EAB67D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JCP.Ordering.Infrastructure", "Services\Ordering\Infrastructure\JCP.Ordering.Infrastructure\JCP.Ordering.Infrastructure.csproj", "{F25F6620-AC96-46DD-B305-AAAF9EAB67D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

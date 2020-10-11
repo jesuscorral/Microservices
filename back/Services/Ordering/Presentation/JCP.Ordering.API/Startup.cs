@@ -1,8 +1,7 @@
 using System.Reflection;
 using JCP.Ordering.API.Features.Orders.Create;
-using JCP.Ordering.Domain.SeedWork;
-using JCP.Ordering.Infrastructure;
-using JCP.Ordering.Infrastructure.Context;
+using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
+using JCP.Ordering.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,11 +27,10 @@ namespace JCP.Ordering.API
             // Register all the Command classes (they implement IRequestHandler) in assembly holding the CreateOrderRequestMV
             services.AddMediatR(typeof(CreateOrderCommand).GetTypeInfo().Assembly);
 
-            // Register the persistence with entityframeworkCore with Azure Cosmos DB
-            //services.AddCosmosBDPersistence(Configuration);
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
-            services.AddScoped<IDomainEventsConsumer, PersisterDomainEventsConsumer>();
-            services.AddScoped<IEventStore, OrderingContextCosmosDb>();
+            services.AddTransient<IRequestHandler<CreateOrderCommand, bool>, CreateOrderCommandHandler>(); // MediatR dependency injection example
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
