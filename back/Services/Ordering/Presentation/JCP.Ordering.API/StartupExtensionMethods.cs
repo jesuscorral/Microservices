@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using JCP.Ordering.API.Features.Orders.Create;
+using JCP.Ordering.API.IntegrationEvents;
+using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
+using JCP.Ordering.Infrastructure.Repositories;
+using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
@@ -27,6 +32,16 @@ namespace JCP.Ordering.API
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Microservices-example");
             });
             return app;
+        }
+
+        public static IServiceCollection InjectDependencies(this IServiceCollection services)
+        {
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
+
+            services.AddTransient<IRequestHandler<CreateOrderCommand, bool>, CreateOrderCommandHandler>(); // MediatR dependency injection example
+
+            return services;
         }
     }
 }

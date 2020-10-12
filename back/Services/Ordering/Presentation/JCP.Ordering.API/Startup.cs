@@ -1,7 +1,5 @@
 using System.Reflection;
 using JCP.Ordering.API.Features.Orders.Create;
-using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
-using JCP.Ordering.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,10 +25,7 @@ namespace JCP.Ordering.API
             // Register all the Command classes (they implement IRequestHandler) in assembly holding the CreateOrderRequestMV
             services.AddMediatR(typeof(CreateOrderCommand).GetTypeInfo().Assembly);
 
-            services.AddScoped<IOrderRepository, OrderRepository>();
-
-            services.AddTransient<IRequestHandler<CreateOrderCommand, bool>, CreateOrderCommandHandler>(); // MediatR dependency injection example
-
+            services.InjectDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
