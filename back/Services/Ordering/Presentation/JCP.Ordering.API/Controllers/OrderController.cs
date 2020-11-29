@@ -43,7 +43,7 @@ namespace JCP.Ordering.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetOrders() 
         {
-            var response = _mediator.Send(new GetOrdersQuery());
+            var response = await _mediator.Send(new GetOrdersQuery());
             return Ok(response);
         }
     }
