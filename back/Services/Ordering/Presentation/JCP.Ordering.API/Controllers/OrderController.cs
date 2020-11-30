@@ -19,23 +19,18 @@ namespace JCP.Ordering.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(CreateOrderCommandResponse))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command) 
         {
-            // TODO -- Add unit test for this validation
-            if (!ModelState.IsValid) {
-                return BadRequest();
-            }
-
             var response = await _mediator.Send(command);
 
-            if (!response) 
+            if (!response.IsSuccess) 
             {
                 return BadRequest();
             }
 
-            return Ok();
+            return Ok(response);
         }
 
         [HttpGet]

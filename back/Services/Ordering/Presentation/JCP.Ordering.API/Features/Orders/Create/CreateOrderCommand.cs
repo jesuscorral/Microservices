@@ -5,7 +5,7 @@ using MediatR;
 
 namespace JCP.Ordering.API.Features.Orders.Create
 {
-    public class CreateOrderCommand: IRequest<bool>
+    public class CreateOrderCommand: IRequest<CreateOrderCommandResponse>
     {
         public string Name { get; set; }
         public double Amount { get; set; }

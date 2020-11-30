@@ -39,7 +39,7 @@ namespace JCP.Ordering.API
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 
-            services.AddTransient<IRequestHandler<CreateOrderCommand, bool>, CreateOrderCommandHandler>(); // MediatR dependency injection example
+            services.AddTransient<IRequestHandler<CreateOrderCommand, CreateOrderCommandResponse>, CreateOrderCommandHandler>(); // MediatR dependency injection example
 
             return services;
         }

@@ -9,7 +9,7 @@ using MediatR;
 
 namespace JCP.Ordering.API.Features.Orders.Create
 {
-    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, bool>
+    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, CreateOrderCommandResponse>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
@@ -21,7 +21,7 @@ namespace JCP.Ordering.API.Features.Orders.Create
             _orderingIntegrationEventService = orderingIntegrationEventService ?? throw new ArgumentNullException(nameof(orderingIntegrationEventService));
         }
 
-        public async Task<bool> Handle(CreateOrderCommand request, CancellationToken cancellationToken) 
+        public async Task<CreateOrderCommandResponse> Handle(CreateOrderCommand request, CancellationToken cancellationToken) 
         {
             var order = new Order(request.Name, request.Amount, request.BuidlOrderItems(request.OrderItems));
             var t = new OrderCreatedEvent(Guid.NewGuid(), order);
@@ -32,7 +32,13 @@ namespace JCP.Ordering.API.Features.Orders.Create
             var orderStartedIntegrationEvent = new OrderCreatedIntegrationEvent(userId.ToString());
             await _orderingIntegrationEventService.PublishEventsThroughEventBusAsync(orderStartedIntegrationEvent);
 
-            return await _orderRepository.SaveEntities();
+            var CreateOrderResponse = await _orderRepository.SaveEntities();
+
+            return new CreateOrderCommandResponse
+            {
+                Id = order.id,
+                IsSuccess = CreateOrderResponse
+            };
         }
     }
 }
