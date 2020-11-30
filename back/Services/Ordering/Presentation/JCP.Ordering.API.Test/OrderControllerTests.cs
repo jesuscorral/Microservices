@@ -11,7 +11,7 @@ using Xunit;
 
 namespace JCP.Ordering.API.Test
 {
-    public class OrderControllerTest
+    public class OrderControllerTests
     {
         private Mock<IMediator> mediatorMock;
 
