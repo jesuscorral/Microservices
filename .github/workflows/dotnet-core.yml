@@ -17,8 +17,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+    - name: Install dependecies
+      run: dotnet restore ..\..\back\Services\Catalog\Catalog.API\Catalog.API.csproj
+   
 
