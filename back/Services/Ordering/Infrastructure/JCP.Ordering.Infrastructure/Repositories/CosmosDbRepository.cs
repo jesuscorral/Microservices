@@ -5,7 +5,6 @@ using JCP.Ordering.Domain.DomainEvents;
 using JCP.Ordering.Domain.SeedWork;
 using MediatR;
 using Microsoft.Azure.Cosmos;
-using Newtonsoft.Json;
 
 namespace JCP.Ordering.Infrastructure.Repositories
 {

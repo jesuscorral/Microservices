@@ -17,10 +17,10 @@ namespace JCP.Ordering.API.Features.Orders.Create
             var ret = new List<OrderItem>();
             orderItems?.ToList().ForEach(x => {
                 ret.Add(new OrderItem { 
-                Discount = x.Discount,
-                ProductName = x.ProductName,
-                UnitPrice = x.UnitPrice,
-                Units = x.Units
+                //Discount = x.Discount,
+                //ProductName = x.ProductName,
+                //UnitPrice = x.UnitPrice,
+                //Units = x.Units
                 });
             });
 

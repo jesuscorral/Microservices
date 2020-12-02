@@ -8,7 +8,7 @@ namespace JCP.Catalog.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<CatalogItem> builder)
         {
-            builder.ToTable("Catalog");
+            builder.ToTable<CatalogItem>("CatalogItem", "Catalog");
 
             //builder.Property(ci => ci.Id)
             //    .UseHiLo("catalog_hilo")

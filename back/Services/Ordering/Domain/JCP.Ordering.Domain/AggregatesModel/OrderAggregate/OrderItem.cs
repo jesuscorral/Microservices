@@ -1,10 +1,15 @@
-﻿namespace JCP.Ordering.Domain.AggregatesModel.OrderAggregate
+﻿using System;
+
+namespace JCP.Ordering.Domain.AggregatesModel.OrderAggregate
 {
     public class OrderItem
     {
-        public string ProductName;
-        public decimal UnitPrice;
-        public decimal Discount;
-        public int Units;
+        public Guid Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public decimal Price { get; set; }
     }
 }

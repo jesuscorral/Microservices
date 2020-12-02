@@ -25,6 +25,9 @@ namespace JCP.Ordering.API
             // Register all the Command classes (they implement IRequestHandler) in assembly holding the CreateOrderRequestMV
             services.AddMediatR(typeof(CreateOrderCommand).GetTypeInfo().Assembly);
 
+            // Add database
+            services.AddCustomDbContext(Configuration);
+
             services.InjectDependencies();
         }
 

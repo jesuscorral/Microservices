@@ -1,11 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using JCP.Ordering.Domain.DomainEvents;
-using JCP.Ordering.Infrastructure.Repositories;
-using MediatR;
-using Microsoft.Azure.Cosmos;
-
-namespace JCP.Ordering.Infrastructure
+﻿namespace JCP.Ordering.Infrastructure
 {
     public static class MediatorExtension
     {

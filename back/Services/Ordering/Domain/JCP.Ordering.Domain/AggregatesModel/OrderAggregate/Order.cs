@@ -20,10 +20,5 @@ namespace JCP.Ordering.Domain.AggregatesModel.OrderAggregate
             _orderItems = orderItems;
             _date = DateTime.UtcNow;
         }
-
-        //public void AddOrder()
-        //{
-        //    AddDomainEvent(new OrderCreatedEvent(this));
-        //}
     }
 }
