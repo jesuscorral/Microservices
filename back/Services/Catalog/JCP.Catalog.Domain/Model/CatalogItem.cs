@@ -1,8 +1,10 @@
-﻿namespace JCP.Catalog.Domain.Model
+﻿using System;
+
+namespace JCP.Catalog.Domain.Model
 { 
-    public class CatalogItem
+    public class CatalogItem : IEntity
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

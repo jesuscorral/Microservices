@@ -10,16 +10,18 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-nanoserver-1903 AS build
 WORKDIR /src
-COPY ["Catalog.API/Catalog.API.csproj", "Catalog.API/"]
-RUN dotnet restore "Catalog.API/Catalog.API.csproj"
+COPY ["Catalog/JCP.Catalog.API/Catalog.API.csproj", "JCP.Catalog.API/"]
+COPY ["JCP.Catalog.API/Catalog.Domain.csproj", "JCP.Catalog.Domain/"]
+COPY ["JCP.Catalog.API/Catalog.Infrastructure.csproj", "JCP.Catalog.Infrastructure/"]
+RUN dotnet restore "JCP.Catalog.API/Catalog.API.csproj"
 COPY . .
-WORKDIR "/src/Catalog.API"
-RUN dotnet build "Catalog.API.csproj" -c Release -o /app/build
+WORKDIR "/src/JCP.Catalog.API"
+RUN dotnet build "JCP.Catalog.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Catalog.API.csproj" -c Release -o /app/publish
+RUN dotnet publish "JCP.Catalog.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Catalog.API.dll"]
+ENTRYPOINT ["dotnet", "JCP.Catalog.API.dll"]

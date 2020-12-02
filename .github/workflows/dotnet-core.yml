@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 name: Buidl & Test .NET Core
+=======
+name: .NET Core Build & Test
+>>>>>>> 922b61bc18893fbf73e8eb7828ea6db9c3359905
 
 on:
   push:
@@ -21,6 +25,4 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet build '.\back\Services\Catalog\Catalog.API\Catalog.API.csproj'
