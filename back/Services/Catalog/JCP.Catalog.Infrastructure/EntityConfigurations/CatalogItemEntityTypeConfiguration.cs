@@ -1,8 +1,8 @@
-﻿using Catalog.API.Model;
+﻿using JCP.Catalog.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Catalog.API.Infrastructure.EntityConfigurations
+namespace JCP.Catalog.Infrastructure.EntityConfigurations
 {
     public class CatalogItemEntityTypeConfiguration : IEntityTypeConfiguration<CatalogItem>
     {

@@ -1,4 +1,4 @@
-name: .NET Core
+name: Buidl & Test .NET Core
 
 on:
   push:
@@ -8,11 +8,12 @@ on:
 
 jobs:
   build:
-
+    name: Mi primer job
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@main
+    # - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:

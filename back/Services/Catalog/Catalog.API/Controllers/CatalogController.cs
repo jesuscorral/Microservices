@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Catalog.API.Infrastructure;
+﻿using System.Threading.Tasks;
+using JCP.Catalog.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Catalog.API.Controllers
 {
@@ -13,11 +9,11 @@ namespace Catalog.API.Controllers
     [Route("api/[controller]")]
     public class CatalogController : ControllerBase
     {
-        private readonly CatalogContext _catalogContext;
+        private readonly CatalogDbContext catalogContext;
 
-        public CatalogController(CatalogContext context)
+        public CatalogController(CatalogDbContext context)
         {
-            _catalogContext = context;
+            catalogContext = context;
 
             context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
@@ -25,7 +21,7 @@ namespace Catalog.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var catalogItems = await _catalogContext.CatalogItems.ToListAsync();
+            var catalogItems = await catalogContext.CatalogItems.ToListAsync();
 
             return Ok(catalogItems);
         }

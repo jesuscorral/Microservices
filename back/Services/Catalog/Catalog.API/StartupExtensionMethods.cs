@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Catalog.API;
-using Catalog.API.Infrastructure;
+using JCP.Catalog.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,11 +35,10 @@ namespace JCP.Catalog.API
             return app;
         }
 
-
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddEntityFrameworkSqlServer()
-                .AddDbContext<CatalogContext>(options => {
+                .AddDbContext<CatalogDbContext>(options => {
                     options.UseSqlServer(configuration["ConnectionString"],
                                              sqlServerOptionsAction: sqlOptions => {
                                                  sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
@@ -48,9 +47,7 @@ namespace JCP.Catalog.API
                                              });
                 });
 
-
             return services;
         }
-
     }
 }

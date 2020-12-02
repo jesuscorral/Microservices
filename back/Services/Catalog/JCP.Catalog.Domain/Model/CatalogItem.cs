@@ -1,5 +1,5 @@
-﻿namespace Catalog.API.Model
-{
+﻿namespace JCP.Catalog.Domain.Model
+{ 
     public class CatalogItem
     {
         public int Id { get; set; }
