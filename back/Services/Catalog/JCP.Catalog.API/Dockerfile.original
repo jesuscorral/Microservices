@@ -3,19 +3,19 @@
 #Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
 #For more information, please see https://aka.ms/containercompat
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-nanoserver-1903 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-nanoserver-1903 AS build
 WORKDIR /src
-COPY ["Services/Catalog/JCP.Catalog.API/JCP.Catalog.API.csproj", "Services/Catalog/JCP.Catalog.API/"]
-COPY ["Services/Catalog/JCP.Catalog.Domain/JCP.Catalog.Domain.csproj", "Services/Catalog/JCP.Catalog.Domain/"]
-COPY ["Services/Catalog/JCP.Catalog.Infrastructure/JCP.Catalog.Infrastructure.csproj", "Services/Catalog/JCP.Catalog.Infrastructure/"]
-RUN dotnet restore "Services/Catalog/JCP.Catalog.API/JCP.Catalog.API.csproj"
+COPY ["Catalog/JCP.Catalog.API/JCP.Catalog.API.csproj", "Catalog/JCP.Catalog.API/"]
+COPY ["Catalog/JCP.Catalog.API/JCP.Catalog.Domain.csproj", "Catalog/JCP.Catalog.Domain/"]
+COPY ["Catalog/JCP.Catalog.API/JCP.Catalog.Infrastructure.csproj", "Catalog/JCP.Catalog.Infrastructure/"]
+RUN dotnet restore "JCP.Catalog.API/JCP.Catalog.API.csproj"
 COPY . .
-WORKDIR "/src/Services/Catalog/JCP.Catalog.API"
+WORKDIR "/src/Catalog/JCP.Catalog.API"
 RUN dotnet build "JCP.Catalog.API.csproj" -c Release -o /app/build
 
 FROM build AS publish

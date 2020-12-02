@@ -15,7 +15,8 @@ namespace JCP.Catalog.API
         public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
         {
             return services.AddSwaggerGen(c => {
-                c.SwaggerDoc("v1", new OpenApiInfo {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
                     Version = "v1",
                     Title = "Microservices-example",
                 });
@@ -37,15 +38,15 @@ namespace JCP.Catalog.API
 
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<CatalogDbContext>(options => {
-                    options.UseSqlServer(configuration["ConnectionString"],
-                                             sqlServerOptionsAction: sqlOptions => {
-                                                 sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                                             //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                             sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                                             });
-                });
+            services.AddDbContext<CatalogDbContext>(options => 
+            {
+                options.UseSqlServer(configuration["ConnectionString"],
+                                    sqlServerOptionsAction: sqlOptions => {
+                                        sqlOptions.MigrationsAssembly(typeof(CatalogDbContext).GetTypeInfo().Assembly.GetName().Name);
+                                            //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                                    });
+            });
 
             return services;
         }
