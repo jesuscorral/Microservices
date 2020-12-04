@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using JCP.Catalog.API.IntegrationEvents;
 using JCP.Catalog.Domain.Model;
+using JCP.Catalog.Infrastructure.IntegrationEvents.Interfaces;
 using JCP.Catalog.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,17 +15,19 @@ namespace Catalog.API.Controllers
     public class CatalogController : ControllerBase
     {
         private readonly CatalogDbContext catalogContext;
+        private readonly ICatalogIntegrationEventService catalogIntegrationEventService;
 
-        public CatalogController(CatalogDbContext context)
+        public CatalogController(CatalogDbContext catalogContext,
+                                 ICatalogIntegrationEventService catalogIntegrationEventService)
         {
-            catalogContext = context;
+            this.catalogContext = catalogContext;
+            this.catalogIntegrationEventService = catalogIntegrationEventService;
 
-            context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
         [ProducesResponseType(typeof(CatalogItem), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCatalogItemAsync(Guid id)
+        public async Task<IActionResult> GetCatalogItem(Guid id)
         {
             // TODO - Pasar a una capa de Business Logic e inyectar la interfaz en el controlador.
             var catalogItem = await catalogContext.CatalogItems.SingleOrDefaultAsync(i => i.Id == id);
@@ -38,12 +42,18 @@ namespace Catalog.API.Controllers
         [ProducesResponseType(typeof(CatalogItem), (int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [HttpPost]
-        public async Task<IActionResult> AddAsync([FromBody] CatalogItem catalogItem)
+        public async Task<IActionResult> Add([FromBody] CatalogItem catalogItem)
         {
             // TODO - Extraer el saveContext a un repository para aplicar el repository pattern.
             var catalogItemAdded = catalogContext.Add(catalogItem);
             await catalogContext.SaveChangesAsync();
-            return CreatedAtAction(nameof(AddAsync), new { id = catalogItemAdded.Entity.Id });
+
+            var catalogItemAddedEvent = new CatalogItemAddedIntegrationEvent(catalogItem);
+            await catalogIntegrationEventService.AddAndSaveEventAsync(catalogItemAddedEvent);
+            await catalogIntegrationEventService.PublishEventsThroughEventBusAsync(catalogItemAddedEvent);
+
+            return Ok(catalogItemAdded.Entity.Id);
+            //return CreatedAtAction(nameof(GetCatalogItem), new { id = catalogItemAdded.Entity.Id });
         }
     }
 }

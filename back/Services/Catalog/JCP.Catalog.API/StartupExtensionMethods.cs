@@ -1,12 +1,27 @@
 ﻿using System;
+using System.Data.Common;
 using System.Reflection;
-using Catalog.API;
+using JCP.Catalog.Infrastructure.Configurations;
+using JCP.Catalog.Infrastructure.Configurations.Interfaces;
+using JCP.Catalog.Infrastructure.IntegrationEvents;
+using JCP.Catalog.Infrastructure.IntegrationEvents.Interfaces;
 using JCP.Catalog.Infrastructure.Repositories;
+using JCP.EventBus;
+using JCP.EventBus.Events.Interfaces;
+using JCP.EventBus.Services;
+using JCP.EventBus.Services.Interfaces;
+using JCP.EventLog;
+using JCP.EventLog.Services;
+using JCP.EventLog.Services.Interfacces;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using static JCP.Catalog.Infrastructure.Configurations.AzureServiceBusConfiguration;
 
 namespace JCP.Catalog.API
 {
@@ -36,17 +51,75 @@ namespace JCP.Catalog.API
             return app;
         }
 
-        public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomDbContext(this IServiceCollection services)
         {
+            var serviceProvider = services.BuildServiceProvider();
+            var sqlDbConfiguration = serviceProvider.GetRequiredService<ISqlDbDataServiceConfiguration>();
+
             services.AddDbContext<CatalogDbContext>(options => 
             {
-                options.UseSqlServer(configuration["ConnectionString"],
+                options.UseSqlServer(sqlDbConfiguration.ConnectionString,
                                     sqlServerOptionsAction: sqlOptions => {
                                         sqlOptions.MigrationsAssembly(typeof(CatalogDbContext).GetTypeInfo().Assembly.GetName().Name);
-                                            //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                                     });
             });
+
+            services.AddDbContext<EventLogContext>(options => {
+                options.UseSqlServer(sqlDbConfiguration.ConnectionString,
+                                     sqlServerOptionsAction: sqlOptions => {
+                                         sqlOptions.MigrationsAssembly(typeof(CatalogDbContext).GetTypeInfo().Assembly.GetName().Name);
+                                         sqlOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                                     });
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection AddAppConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<SqlDbDataServiceConfiguration>(configuration.GetSection("SqlDbSettings"));
+            services.AddSingleton<IValidateOptions<SqlDbDataServiceConfiguration>, SqlDbDataServiceConfigurationValidation>();
+            var sqlDbDataServiceConfiguration = services.BuildServiceProvider().GetRequiredService<IOptions<SqlDbDataServiceConfiguration>>().Value;
+            services.AddSingleton<ISqlDbDataServiceConfiguration>(sqlDbDataServiceConfiguration);
+
+            services.Configure<AzureServiceBusConfiguration>(configuration.GetSection("AzureServiceBusSettings"));
+            services.AddSingleton<IValidateOptions<AzureServiceBusConfiguration>, AzureServiceBusConfigurationValidation>();
+            var azureServiceBusConfiguration = services.BuildServiceProvider().GetRequiredService<IOptions<AzureServiceBusConfiguration>>().Value;
+            services.AddSingleton<IAzureServiceBusConfiguration>(azureServiceBusConfiguration);
+
+            return services;
+        }
+
+        public static IServiceCollection AddIntegrationServices(this IServiceCollection services)
+        {
+            var serviceProvider = services.BuildServiceProvider();
+            var azureServiceBusConfiguration = serviceProvider.GetRequiredService<IAzureServiceBusConfiguration>();
+
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
+
+            services.AddSingleton<IServiceBusConnectionManagementService>(sp => 
+            {
+                var logger = sp.GetRequiredService<ILogger<ServiceBusConnectionManagementService>>();
+                var serviceBusConnection = new ServiceBusConnectionStringBuilder(azureServiceBusConfiguration.ConnectionString);
+                return new ServiceBusConnectionManagementService(logger, serviceBusConnection);
+            });
+
+            services.AddSingleton<IEventBus, AzureServiceBusEventBus>(sp => {
+                var serviceBusConnectionManagementService = sp.GetRequiredService<IServiceBusConnectionManagementService>();
+                var logger = sp.GetRequiredService<ILogger<AzureServiceBusEventBus>>();
+                var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                var eventBus = new AzureServiceBusEventBus(serviceBusConnectionManagementService, eventBusSubcriptionsManager,
+                    serviceProvider, logger, azureServiceBusConfiguration.SubscriptionClientName);
+                eventBus.SetupAsync().GetAwaiter().GetResult();
+
+                return eventBus;
+            });
+
+            services.AddTransient<Func<DbConnection, IEventLogService>>(
+                    sp => (DbConnection connection) => new EventLogService(connection));
 
             return services;
         }

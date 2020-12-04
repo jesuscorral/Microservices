@@ -17,6 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\JCP.EventBus\JCP.EventBus.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\JCP.EventLog\JCP.EventLog.csproj" />
     <ProjectReference Include="..\JCP.Catalog.Domain\JCP.Catalog.Domain.csproj" />
   </ItemGroup>
 
