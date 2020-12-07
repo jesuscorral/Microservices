@@ -51,10 +51,11 @@ namespace JCP.Catalog.API
             return app;
         }
 
-        public static IServiceCollection AddCustomDbContext(this IServiceCollection services)
+        public static IServiceCollection AddDatabasesContexts(this IServiceCollection services)
         {
             var serviceProvider = services.BuildServiceProvider();
             var sqlDbConfiguration = serviceProvider.GetRequiredService<ISqlDbDataServiceConfiguration>();
+
 
             services.AddDbContext<CatalogDbContext>(options => 
             {
@@ -76,17 +77,18 @@ namespace JCP.Catalog.API
             return services;
         }
 
-        public static IServiceCollection AddAppConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddAppSettings(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<AzureServiceBusConfiguration>(configuration.GetSection("AzureServiceBusSettings"));
+            services.AddSingleton<IValidateOptions<AzureServiceBusConfiguration>, AzureServiceBusConfigurationValidation>();
+            var azureServiceBusConfiguration = services.BuildServiceProvider().GetRequiredService<IOptions<AzureServiceBusConfiguration>>().Value;
+            services.AddSingleton<IAzureServiceBusConfiguration>(azureServiceBusConfiguration);
+
             services.Configure<SqlDbDataServiceConfiguration>(configuration.GetSection("SqlDbSettings"));
             services.AddSingleton<IValidateOptions<SqlDbDataServiceConfiguration>, SqlDbDataServiceConfigurationValidation>();
             var sqlDbDataServiceConfiguration = services.BuildServiceProvider().GetRequiredService<IOptions<SqlDbDataServiceConfiguration>>().Value;
             services.AddSingleton<ISqlDbDataServiceConfiguration>(sqlDbDataServiceConfiguration);
 
-            services.Configure<AzureServiceBusConfiguration>(configuration.GetSection("AzureServiceBusSettings"));
-            services.AddSingleton<IValidateOptions<AzureServiceBusConfiguration>, AzureServiceBusConfigurationValidation>();
-            var azureServiceBusConfiguration = services.BuildServiceProvider().GetRequiredService<IOptions<AzureServiceBusConfiguration>>().Value;
-            services.AddSingleton<IAzureServiceBusConfiguration>(azureServiceBusConfiguration);
 
             return services;
         }

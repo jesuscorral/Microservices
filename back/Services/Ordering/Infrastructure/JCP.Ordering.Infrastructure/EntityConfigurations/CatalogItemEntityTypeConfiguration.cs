@@ -8,7 +8,7 @@ namespace JCP.Ordering.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {
-            builder.ToTable<OrderItem>("OrderItem", "Order");
+            builder.ToTable<OrderItem>("OrderItem", "Catalog");
 
             builder.Property(ci => ci.Name)
                     .IsRequired(true)

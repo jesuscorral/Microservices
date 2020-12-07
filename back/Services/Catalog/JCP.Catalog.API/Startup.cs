@@ -19,8 +19,8 @@ namespace Catalog.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppConfiguration(Configuration);
-            services.AddCustomDbContext();
+            services.AddAppSettings(Configuration);
+            services.AddDatabasesContexts();
             // Azure service bus configuration
             services.AddIntegrationServices();
             services.AddControllers();

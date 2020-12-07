@@ -9,7 +9,7 @@ namespace JCP.Ordering.Infrastructure.Repositories
         public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options)
         {
         }
-        public DbSet<OrderItem> CatalogItems { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

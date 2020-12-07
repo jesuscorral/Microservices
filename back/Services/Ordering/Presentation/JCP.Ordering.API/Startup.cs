@@ -23,13 +23,14 @@ namespace JCP.Ordering.API
         {
             services.InjectDependencies();
             services.AddAppConfiguration(Configuration);
+            // Add database
+            services.AddCustomDbContext(Configuration);
             services.AddIntegrationServices();
             services.AddCustomSwagger();
             services.AddControllers();
             // Register all the Command classes (they implement IRequestHandler) in assembly holding the CreateOrderRequestMV
             services.AddMediatR(typeof(CreateOrderCommand).GetTypeInfo().Assembly);
-            // Add database
-            services.AddCustomDbContext(Configuration);
+            
 
         }
 

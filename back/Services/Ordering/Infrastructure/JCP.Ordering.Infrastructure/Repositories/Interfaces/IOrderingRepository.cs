@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
 
 namespace JCP.Ordering.Infrastructure.Repositories.Interfaces
 {
     public interface IOrderingRepository
     {
-        // TODO - Cambiar por el correcto
-        Task<bool> SaveOrderItemAsync(Guid id);
+        Task<int> SaveOrderItemAsync(OrderItem orderItem);
     }
 }
