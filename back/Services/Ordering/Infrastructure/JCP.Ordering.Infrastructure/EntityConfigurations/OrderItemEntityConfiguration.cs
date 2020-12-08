@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace JCP.Ordering.Infrastructure.EntityConfigurations
 {
-    public class CatalogItemEntityTypeConfiguration : IEntityTypeConfiguration<OrderItem>
+    public class OrderItemEntityConfiguration : IEntityTypeConfiguration<OrderItem>
     {
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {

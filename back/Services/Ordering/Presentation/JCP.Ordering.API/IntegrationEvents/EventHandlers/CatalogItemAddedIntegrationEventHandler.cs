@@ -11,10 +11,10 @@ namespace JCP.Ordering.Api.IntegrationEvents.EventHandlers
     public class CatalogItemAddedIntegrationEventHandler : IIntegrationEventHandler<CatalogItemAddedIntegrationEvent>
     {
         private readonly ILogger<CatalogItemAddedIntegrationEventHandler> _logger;
-        private readonly IOrderingRepository orderingRepository;
+        private readonly IOrderRepository orderingRepository;
 
         public CatalogItemAddedIntegrationEventHandler(ILogger<CatalogItemAddedIntegrationEventHandler> logger,
-                                                       IOrderingRepository orderingRepository)
+                                                       IOrderRepository orderingRepository)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.orderingRepository = orderingRepository ?? throw new ArgumentNullException(nameof(orderingRepository));

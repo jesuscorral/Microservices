@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using JCP.Ordering.Infrastructure.Configuration.Interface;
+﻿using JCP.Ordering.Infrastructure.Configuration.Interface;
 using Microsoft.Extensions.Options;
 
 namespace JCP.Ordering.Infrastructure.Configuration

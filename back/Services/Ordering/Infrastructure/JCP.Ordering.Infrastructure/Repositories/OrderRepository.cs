@@ -1,13 +1,22 @@
-﻿using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
-using JCP.Ordering.Domain.DomainEvents;
-using MediatR;
+﻿using System.Threading.Tasks;
+using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
+using JCP.Ordering.Infrastructure.Repositories.Interfaces;
 
 namespace JCP.Ordering.Infrastructure.Repositories
 {
-    public class OrderRepository : CosmosDbRepository<IDomainEvent>, IOrderRepository
+    public class OrderRepository : IOrderRepository
     {
-        public override string CollectionName { get; } = "todoItems";
+        private OrderDbContext orderDbContext;
 
-        public OrderRepository(IMediator mediator) : base(mediator) { }
+        public OrderRepository(OrderDbContext orderDbContext)
+        {
+            this.orderDbContext = orderDbContext;
+        }
+
+        public async Task<int> SaveOrderItemAsync(OrderItem orderItem)
+        {
+            this.orderDbContext.OrderItems.Add(orderItem);
+            return await this.orderDbContext.SaveChangesAsync();
+        }
     }
 }
