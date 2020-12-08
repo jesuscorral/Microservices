@@ -6,19 +6,12 @@ namespace JCP.Ordering.Domain.AggregatesModel.OrderAggregate
 {
     public class Order : IAggregateRoot
     {
-        public Guid id;
-        public string orderName;
-        public DateTime _date;
-        public double _amount;
-        public List<OrderItem> _orderItems;
-        
-        public Order(string name, double amount, List<OrderItem> orderItems)
-        {
-            id = Guid.NewGuid();
-            orderName = name;
-            _amount = amount;
-            _orderItems = orderItems;
-            _date = DateTime.UtcNow;
-        }
+        public Guid Id { get; set; }
+        public string OrderName { get; set; }
+        public DateTime Date { get; set; }
+        public double Amount { get; set; }
+
+        public ICollection<OrderOrderItem> OrderOrderItems { get; set; }
+
     }
 }

@@ -23,7 +23,7 @@ namespace JCP.Ordering.API.Features.Orders.Create
 
         public async Task<CreateOrderCommandResponse> Handle(CreateOrderCommand request, CancellationToken cancellationToken) 
         {
-            var order = new Order(request.Name, request.Amount, request.BuidlOrderItems(request.OrderItems));
+            //var order = new Order(request.Name, request.Amount, request.BuidlOrderItems(request.OrderItems));
             
 
             var userId = Guid.NewGuid();
@@ -35,7 +35,7 @@ namespace JCP.Ordering.API.Features.Orders.Create
 
             return new CreateOrderCommandResponse
             {
-                Id = order.id,
+                Id = Guid.NewGuid(),
                 IsSuccess = true
             };
         }

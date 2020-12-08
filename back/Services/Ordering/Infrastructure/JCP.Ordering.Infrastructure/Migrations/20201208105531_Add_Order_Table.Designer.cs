@@ -4,14 +4,16 @@ using JCP.Ordering.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JCP.Ordering.Infrastructure.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    partial class OrderDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201208105531_Add_Order_Table")]
+    partial class Add_Order_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,55 +55,30 @@ namespace JCP.Ordering.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("Price")
                         .HasPrecision(4, 2)
                         .HasColumnType("decimal(4,2)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderId");
+
                     b.ToTable("OrderItem", "Catalog");
-                });
-
-            modelBuilder.Entity("JCP.Ordering.Domain.AggregatesModel.OrderAggregate.OrderOrderItem", b =>
-                {
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("OrderItemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("OrderId", "OrderItemId");
-
-                    b.ToTable("OrderOrderItem", "Ordering");
-                });
-
-            modelBuilder.Entity("JCP.Ordering.Domain.AggregatesModel.OrderAggregate.OrderOrderItem", b =>
-                {
-                    b.HasOne("JCP.Ordering.Domain.AggregatesModel.OrderAggregate.Order", "Order")
-                        .WithMany("OrderOrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("JCP.Ordering.Domain.AggregatesModel.OrderAggregate.OrderItem", "OrderItem")
-                        .WithMany("OrderOrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("OrderItem");
-                });
-
-            modelBuilder.Entity("JCP.Ordering.Domain.AggregatesModel.OrderAggregate.Order", b =>
-                {
-                    b.Navigation("OrderOrderItems");
                 });
 
             modelBuilder.Entity("JCP.Ordering.Domain.AggregatesModel.OrderAggregate.OrderItem", b =>
                 {
-                    b.Navigation("OrderOrderItems");
+                    b.HasOne("JCP.Ordering.Domain.AggregatesModel.OrderAggregate.Order", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId");
+                });
+
+            modelBuilder.Entity("JCP.Ordering.Domain.AggregatesModel.OrderAggregate.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,14 +4,16 @@ using JCP.Ordering.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JCP.Ordering.Infrastructure.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    partial class OrderDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201208112120_change-relationship")]
+    partial class changerelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,7 +74,7 @@ namespace JCP.Ordering.Infrastructure.Migrations
 
                     b.HasKey("OrderId", "OrderItemId");
 
-                    b.ToTable("OrderOrderItem", "Ordering");
+                    b.ToTable("OrderOrderItems");
                 });
 
             modelBuilder.Entity("JCP.Ordering.Domain.AggregatesModel.OrderAggregate.OrderOrderItem", b =>
