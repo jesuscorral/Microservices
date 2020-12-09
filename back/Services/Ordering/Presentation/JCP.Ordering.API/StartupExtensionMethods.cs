@@ -9,7 +9,7 @@ using JCP.EventLog.Services;
 using JCP.EventLog.Services.Interfacces;
 using JCP.Ordering.Api.IntegrationEvents.EventHandlers;
 using JCP.Ordering.Api.IntegrationEvents.Events;
-using JCP.Ordering.API.Features.Orders.Create;
+using JCP.Ordering.API.Features.Orders.Commands;
 using JCP.Ordering.Infrastructure.Configuration;
 using JCP.Ordering.Infrastructure.Configuration.Interface;
 using JCP.Ordering.Infrastructure.Repositories;

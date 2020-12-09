@@ -8,9 +8,16 @@ namespace JCP.Ordering.Domain.Entities
     {
         public Guid Id { get;  private set; }
         public string OrderName { get; private set; }
-        public DateTime Date { get; private set; }
         public double Amount { get; private set; }
 
         public ICollection<OrderOrderItem> OrderOrderItems { get; set; }
+         
+        // TODO - Revisar la relacion entre las orders y los orderItems - ¿Cambiar orderItem por producto?
+        public Order(string orderName, double amount)
+        {
+            this.OrderName = orderName;
+            this.Amount = amount;
+            this.Created = DateTime.UtcNow;
+        }
     }
 }

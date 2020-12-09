@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using JCP.Ordering.Domain.Entities;
 using JCP.Ordering.Infrastructure.Repositories.Interfaces;
 using MediatR;
 
-namespace JCP.Ordering.API.Features.Orders.Create
+namespace JCP.Ordering.API.Features.Orders.Commands
 {
     public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, CreateOrderCommandResponse>
     {
@@ -17,14 +18,14 @@ namespace JCP.Ordering.API.Features.Orders.Create
 
         public async Task<CreateOrderCommandResponse> Handle(CreateOrderCommand request, CancellationToken cancellationToken) 
         {
-            var userId = Guid.NewGuid();
+            var newEntity = new Order(request.Name, request.Amount);
            
+            await orderRepository.SaveOrderAsync(cancellationToken, newEntity);
 
-            //var CreateOrderResponse = await _orderRepository.SaveEntities();
-
+            // TODO - Comprobar cuando el saveOrders falle y devolver un false.
             return new CreateOrderCommandResponse
             {
-                Id = Guid.NewGuid(),
+                Id = newEntity.Id,
                 IsSuccess = true
             };
         }

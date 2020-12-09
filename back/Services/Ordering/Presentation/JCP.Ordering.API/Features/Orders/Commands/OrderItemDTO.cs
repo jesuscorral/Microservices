@@ -1,4 +1,4 @@
-﻿namespace JCP.Ordering.API.Features.Orders.Create
+﻿namespace JCP.Ordering.API.Features.Orders.Commands
 {
     public class OrderItemDTO
     {

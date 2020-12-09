@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace JCP.Ordering.API.Features.Orders.GetOrders
+namespace JCP.Ordering.API.Features.Orders.Queries
 {
     public class OrderDTO
     {

@@ -1,5 +1,5 @@
 using System.Reflection;
-using JCP.Ordering.API.Features.Orders.Create;
+using JCP.Ordering.API.Features.Orders.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,8 +30,6 @@ namespace JCP.Ordering.API
             services.AddControllers();
             // Register all the Command classes (they implement IRequestHandler) in assembly holding the CreateOrderRequestMV
             services.AddMediatR(typeof(CreateOrderCommand).GetTypeInfo().Assembly);
-            
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
