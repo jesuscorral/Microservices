@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using JCP.EventBus.Events.Interfaces;
 using JCP.Ordering.Api.IntegrationEvents.Events;
-using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
+using JCP.Ordering.Domain.Entities;
 using JCP.Ordering.Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -24,13 +24,8 @@ namespace JCP.Ordering.Api.IntegrationEvents.EventHandlers
         {
             _logger.LogInformation($"Handling integration event: {@event.Id} - ({@event})");
 
-            var orderItem = new OrderItem
-            {
-                Id = @event.Id,
-                Description = @event.Description,
-                Name = @event.Name,
-                Price = @event.Price
-            };
+            var orderItem = new OrderItem(@event.Id, @event.Description, @event.Name, @event.Price);
+
             await orderingRepository.SaveOrderItemAsync(orderItem);
         }
 

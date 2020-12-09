@@ -1,4 +1,4 @@
-﻿using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
+﻿using JCP.Ordering.Domain.Entities;
 using JCP.Ordering.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

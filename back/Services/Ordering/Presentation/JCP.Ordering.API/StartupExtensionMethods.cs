@@ -10,7 +10,6 @@ using JCP.EventLog.Services.Interfacces;
 using JCP.Ordering.Api.IntegrationEvents.EventHandlers;
 using JCP.Ordering.Api.IntegrationEvents.Events;
 using JCP.Ordering.API.Features.Orders.Create;
-using JCP.Ordering.API.IntegrationEvents;
 using JCP.Ordering.Infrastructure.Configuration;
 using JCP.Ordering.Infrastructure.Configuration.Interface;
 using JCP.Ordering.Infrastructure.Repositories;
@@ -54,8 +53,6 @@ namespace JCP.Ordering.API
 
         public static IServiceCollection InjectDependencies(this IServiceCollection services)
         {
-            services.AddScoped<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
-
             services.AddTransient<IRequestHandler<CreateOrderCommand, CreateOrderCommandResponse>, CreateOrderCommandHandler>(); // MediatR dependency injection example
             services.AddScoped<IOrderRepository, OrderRepository>();
 

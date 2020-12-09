@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
+using JCP.Ordering.Domain.Entities;
 using JCP.Ordering.Infrastructure.Repositories.Interfaces;
 
 namespace JCP.Ordering.Infrastructure.Repositories
