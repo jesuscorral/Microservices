@@ -1,17 +1,19 @@
 ﻿using System;
+using System.Data.Common;
 using System.Reflection;
 using JCP.EventBus;
 using JCP.EventBus.Events.Interfaces;
 using JCP.EventBus.Services;
 using JCP.EventBus.Services.Interfaces;
+using JCP.EventLog.Services;
+using JCP.EventLog.Services.Interfacces;
 using JCP.Ordering.Api.IntegrationEvents.EventHandlers;
 using JCP.Ordering.Api.IntegrationEvents.Events;
-using JCP.Ordering.API.Features.Orders.Create;
-using JCP.Ordering.API.IntegrationEvents;
-using JCP.Ordering.Domain.AggregatesModel.OrderAggregate;
+using JCP.Ordering.API.Features.Orders.Commands;
 using JCP.Ordering.Infrastructure.Configuration;
 using JCP.Ordering.Infrastructure.Configuration.Interface;
 using JCP.Ordering.Infrastructure.Repositories;
+using JCP.Ordering.Infrastructure.Repositories.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Azure.ServiceBus;
@@ -21,10 +23,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using System.Data.Common;
-using JCP.EventLog.Services;
-using JCP.EventLog.Services.Interfacces;
-using JCP.Ordering.Infrastructure.Repositories.Interfaces;
 
 namespace JCP.Ordering.API
 {
@@ -55,11 +53,8 @@ namespace JCP.Ordering.API
 
         public static IServiceCollection InjectDependencies(this IServiceCollection services)
         {
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
-
             services.AddTransient<IRequestHandler<CreateOrderCommand, CreateOrderCommandResponse>, CreateOrderCommandHandler>(); // MediatR dependency injection example
-            services.AddScoped<IOrderingRepository, OrderingRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             return services;
         }
@@ -96,7 +91,7 @@ namespace JCP.Ordering.API
             var azureServiceBusConfiguration = serviceProvider.GetRequiredService<IAzureServiceBusConfiguration>();
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-            services.AddTransient<IIntegrationEventHandler<CatalogItemAddedIntegrationEvent>, CatalogItemAddedIntegrationEventHandler>();
+            services.AddTransient<IIntegrationEventHandler<ProductAddedIntegrationEvent>, ProductAddedIntegrationEventHandler>();
 
             services.AddSingleton<IServiceBusConnectionManagementService>(sp => 
             {
@@ -123,8 +118,8 @@ namespace JCP.Ordering.API
 
             var eventBus = serviceProvider.GetRequiredService<IEventBus>();
             eventBus.SetupAsync().GetAwaiter().GetResult();
-            eventBus.SubscribeAsync<CatalogItemAddedIntegrationEvent,
-                                    IIntegrationEventHandler<CatalogItemAddedIntegrationEvent>>()
+            eventBus.SubscribeAsync<ProductAddedIntegrationEvent,
+                                    IIntegrationEventHandler<ProductAddedIntegrationEvent>>()
                                     .GetAwaiter().GetResult();
 
             return services;

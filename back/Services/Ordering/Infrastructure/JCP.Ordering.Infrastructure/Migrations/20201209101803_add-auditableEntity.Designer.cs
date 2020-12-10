@@ -4,14 +4,16 @@ using JCP.Ordering.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JCP.Ordering.Infrastructure.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    partial class OrderDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201209101803_add-auditableEntity")]
+    partial class addauditableEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,16 +27,25 @@ namespace JCP.Ordering.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -43,33 +54,6 @@ namespace JCP.Ordering.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("JCP.Ordering.Domain.Entities.OrderItem", b =>
-                {
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("OrderId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderItem", "Ordering");
-                });
-
-            modelBuilder.Entity("JCP.Ordering.Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,36 +85,61 @@ namespace JCP.Ordering.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Product", "Catalog");
+                    b.ToTable("OrderItem", "Catalog");
                 });
 
-            modelBuilder.Entity("JCP.Ordering.Domain.Entities.OrderItem", b =>
+            modelBuilder.Entity("JCP.Ordering.Domain.Entities.OrderOrderItem", b =>
+                {
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrderItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OrderId", "OrderItemId");
+
+                    b.ToTable("OrderOrderItem", "Ordering");
+                });
+
+            modelBuilder.Entity("JCP.Ordering.Domain.Entities.OrderOrderItem", b =>
                 {
                     b.HasOne("JCP.Ordering.Domain.Entities.Order", "Order")
-                        .WithMany("OrderItems")
+                        .WithMany("OrderOrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JCP.Ordering.Domain.Entities.Product", "Product")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("ProductId")
+                    b.HasOne("JCP.Ordering.Domain.Entities.OrderItem", "OrderItem")
+                        .WithMany("OrderOrderItems")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Order");
 
-                    b.Navigation("Product");
+                    b.Navigation("OrderItem");
                 });
 
             modelBuilder.Entity("JCP.Ordering.Domain.Entities.Order", b =>
                 {
-                    b.Navigation("OrderItems");
+                    b.Navigation("OrderOrderItems");
                 });
 
-            modelBuilder.Entity("JCP.Ordering.Domain.Entities.Product", b =>
+            modelBuilder.Entity("JCP.Ordering.Domain.Entities.OrderItem", b =>
                 {
-                    b.Navigation("OrderItems");
+                    b.Navigation("OrderOrderItems");
                 });
 #pragma warning restore 612, 618
         }

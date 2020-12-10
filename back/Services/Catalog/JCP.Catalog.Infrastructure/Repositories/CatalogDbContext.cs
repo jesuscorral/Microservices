@@ -6,11 +6,13 @@ namespace JCP.Catalog.Infrastructure.Repositories
 {
     public class CatalogDbContext : DbContext
     {
+        public const string CATALOG_SCHEMA = "Catalog";
+
         public CatalogDbContext(DbContextOptions<CatalogDbContext> options) : base(options)
         {
         }
 
-        public DbSet<CatalogItem> CatalogItems { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

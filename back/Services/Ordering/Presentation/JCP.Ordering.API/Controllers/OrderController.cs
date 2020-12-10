@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using JCP.Ordering.API.Features.Orders.Create;
-using JCP.Ordering.API.Features.Orders.GetOrders;
+using JCP.Ordering.API.Features.Orders.Commands;
+using JCP.Ordering.API.Features.Orders.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,18 +23,12 @@ namespace JCP.Ordering.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command) 
         {
-            var response = await _mediator.Send(command);
-
-            if (!response.IsSuccess) 
-            {
-                return BadRequest();
-            }
-
+            var response =  await _mediator.Send(command);
             return Ok(response);
         }
 
         [HttpGet]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(OrdersVm))]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetOrders() 
         {
