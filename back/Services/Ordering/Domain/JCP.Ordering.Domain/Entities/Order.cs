@@ -17,7 +17,6 @@ namespace JCP.Ordering.Domain.Entities
 
         public Order(List<OrderItem> orderItems)
         {
-            this.Created = DateTime.UtcNow;
             this.OrderItems = orderItems;
         }
     }

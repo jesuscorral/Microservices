@@ -22,7 +22,6 @@ namespace JCP.Ordering.Domain.Entities
             this.Name = name;
             this.Description = description;
             this.Price = price;
-            this.Created = DateTime.UtcNow;
         }
     }
 }

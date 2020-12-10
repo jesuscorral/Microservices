@@ -1,4 +1,8 @@
-﻿using JCP.Ordering.Domain.Entities;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using JCP.Ordering.Domain.Common;
+using JCP.Ordering.Domain.Entities;
 using JCP.Ordering.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +27,26 @@ namespace JCP.Ordering.Infrastructure.Repositories
             builder.ApplyConfiguration(new ProductEntityConfiguration());
             builder.ApplyConfiguration(new OrderEntityConfiguration());
             builder.ApplyConfiguration(new OrderItemEntityConfiguration());
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        //entry.Entity.CreatedBy = _currentUserService.UserId;
+                        entry.Entity.Created = DateTime.UtcNow;
+                        break;
+                    case EntityState.Modified:
+                        //entry.Entity.LastModifiedBy = _currentUserService.UserId;
+                        entry.Entity.LastModified = DateTime.UtcNow;
+                        break;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -15,7 +15,6 @@ namespace JCP.Ordering.Domain.Entities
         {
             OrderId = orderId;
             ProductId = productId;
-            Created = DateTime.UtcNow;
         }
     }
 }
