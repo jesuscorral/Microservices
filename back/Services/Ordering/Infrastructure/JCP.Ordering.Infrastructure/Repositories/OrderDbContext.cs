@@ -13,18 +13,16 @@ namespace JCP.Ordering.Infrastructure.Repositories
         {
         }
         
-        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         public DbSet<Order> Orders { get; set; }
-
-        public DbSet<OrderOrderItem> OrderOrderItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             // Used fluent API, Data Annotations could be used instead of Fluent API
-            builder.ApplyConfiguration(new OrderItemEntityConfiguration());
+            builder.ApplyConfiguration(new ProductEntityConfiguration());
             builder.ApplyConfiguration(new OrderEntityConfiguration());
-            builder.ApplyConfiguration(new OrderOrderItemEntityConfiguration());
+            builder.ApplyConfiguration(new OrderItemEntityConfiguration());
         }
     }
 }

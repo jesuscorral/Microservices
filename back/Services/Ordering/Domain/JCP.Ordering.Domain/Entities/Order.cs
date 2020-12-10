@@ -7,17 +7,18 @@ namespace JCP.Ordering.Domain.Entities
     public class Order : AuditableEntity
     {
         public Guid Id { get;  private set; }
-        public string OrderName { get; private set; }
-        public double Amount { get; private set; }
 
-        public ICollection<OrderOrderItem> OrderOrderItems { get; set; }
-         
-        // TODO - Revisar la relacion entre las orders y los orderItems - ¿Cambiar orderItem por producto?
-        public Order(string orderName, double amount)
+        public ICollection<OrderItem> OrderItems { get; set; }
+
+        public Order()
         {
-            this.OrderName = orderName;
-            this.Amount = amount;
             this.Created = DateTime.UtcNow;
+        }
+
+        public Order(List<OrderItem> orderItems)
+        {
+            this.Created = DateTime.UtcNow;
+            this.OrderItems = orderItems;
         }
     }
 }

@@ -7,10 +7,12 @@ namespace JCP.Ordering.Infrastructure.Repositories.Interfaces
 {
     public interface IOrderRepository
     {
-        Task<int> SaveOrderItemAsync(OrderItem orderItem);
+        Task<int> SaveProduct(Product product);
 
         Task<List<Order>> GetOrders();
 
-        Task<int> SaveOrderAsync(CancellationToken cancellationToken, Order newEntity);
+        Task<List<Product>> GetProducts();
+
+        Task<int> SaveOrder(CancellationToken cancellationToken, Order order);
     }
 }

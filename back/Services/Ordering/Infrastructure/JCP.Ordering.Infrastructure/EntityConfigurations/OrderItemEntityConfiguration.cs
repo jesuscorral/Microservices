@@ -9,16 +9,17 @@ namespace JCP.Ordering.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {
-            builder.ToTable<OrderItem>(nameof(OrderItem), OrderDbContext.CATALOG_SCHEMA);
+            builder.ToTable<OrderItem>(nameof(OrderItem), OrderDbContext.ORDERING_SCHEMA);
 
-            builder.Property(ci => ci.Name)
-                    .IsRequired(true)
-                    .HasMaxLength(50);
+            builder.HasKey(sc => new { sc.OrderId, sc.ProductId });
 
-            builder.Property(ci => ci.Price)
-                    .IsRequired(true)
-                    .HasColumnType("decimal")
-                    .HasPrecision(4, 2);
+            builder.HasOne<Order>(o => o.Order)
+                .WithMany(s => s.OrderItems)
+                .HasForeignKey(sc => sc.OrderId);
+
+            builder.HasOne<Product>(oi => oi.Product)
+                .WithMany(s => s.OrderItems)
+                .HasForeignKey(p => p.ProductId);
         }
     }
 }

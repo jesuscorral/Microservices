@@ -8,25 +8,25 @@ using Microsoft.Extensions.Logging;
 
 namespace JCP.Ordering.Api.IntegrationEvents.EventHandlers
 {
-    public class CatalogItemAddedIntegrationEventHandler : IIntegrationEventHandler<CatalogItemAddedIntegrationEvent>
+    public class ProductAddedIntegrationEventHandler : IIntegrationEventHandler<ProductAddedIntegrationEvent>
     {
-        private readonly ILogger<CatalogItemAddedIntegrationEventHandler> _logger;
+        private readonly ILogger<ProductAddedIntegrationEventHandler> _logger;
         private readonly IOrderRepository orderingRepository;
 
-        public CatalogItemAddedIntegrationEventHandler(ILogger<CatalogItemAddedIntegrationEventHandler> logger,
+        public ProductAddedIntegrationEventHandler(ILogger<ProductAddedIntegrationEventHandler> logger,
                                                        IOrderRepository orderingRepository)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.orderingRepository = orderingRepository ?? throw new ArgumentNullException(nameof(orderingRepository));
         }
 
-        public async Task HandleAsync(CatalogItemAddedIntegrationEvent @event)
+        public async Task HandleAsync(ProductAddedIntegrationEvent @event)
         {
             _logger.LogInformation($"Handling integration event: {@event.Id} - ({@event})");
 
-            var orderItem = new OrderItem(@event.Id, @event.Description, @event.Name, @event.Price);
+            var orderItem = new Product(@event.Id, @event.Description, @event.Name, @event.Price);
 
-            await orderingRepository.SaveOrderItemAsync(orderItem);
+            await orderingRepository.SaveProduct(orderItem);
         }
 
     }

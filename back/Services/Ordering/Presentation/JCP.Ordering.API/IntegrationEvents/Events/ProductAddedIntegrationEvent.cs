@@ -3,7 +3,7 @@ using JCP.EventBus.Events;
 
 namespace JCP.Ordering.Api.IntegrationEvents.Events
 {
-    public class CatalogItemAddedIntegrationEvent : IntegrationEvent
+    public class ProductAddedIntegrationEvent : IntegrationEvent
     {
         public Guid Id { get; set; }
 
@@ -13,7 +13,7 @@ namespace JCP.Ordering.Api.IntegrationEvents.Events
 
         public decimal Price { get; set; }
 
-        public CatalogItemAddedIntegrationEvent(Guid id, string name, string description, decimal price)
+        public ProductAddedIntegrationEvent(Guid id, string name, string description, decimal price)
         {
             Id = id;
             Name = name;

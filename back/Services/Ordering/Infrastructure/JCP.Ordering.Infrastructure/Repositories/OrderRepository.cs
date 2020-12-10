@@ -22,13 +22,18 @@ namespace JCP.Ordering.Infrastructure.Repositories
             return await this.orderDbContext.Orders.ToListAsync();
         }
 
-        public async Task<int> SaveOrderItemAsync( OrderItem orderItem)
+        public async Task<List<Product>> GetProducts()
         {
-            this.orderDbContext.OrderItems.Add(orderItem);
+            return await this.orderDbContext.Products.ToListAsync();
+        }
+
+        public async Task<int> SaveProduct(Product product)
+        {
+            this.orderDbContext.Products.Add(product);
             return await this.orderDbContext.SaveChangesAsync();
         }
 
-        public async Task<int> SaveOrderAsync(CancellationToken cancellationToken, Order order)
+        public async Task<int> SaveOrder(CancellationToken cancellationToken, Order order)
         {
             this.orderDbContext.Orders.Add(order);
             return await this.orderDbContext.SaveChangesAsync(cancellationToken);

@@ -91,7 +91,7 @@ namespace JCP.Ordering.API
             var azureServiceBusConfiguration = serviceProvider.GetRequiredService<IAzureServiceBusConfiguration>();
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-            services.AddTransient<IIntegrationEventHandler<CatalogItemAddedIntegrationEvent>, CatalogItemAddedIntegrationEventHandler>();
+            services.AddTransient<IIntegrationEventHandler<ProductAddedIntegrationEvent>, ProductAddedIntegrationEventHandler>();
 
             services.AddSingleton<IServiceBusConnectionManagementService>(sp => 
             {
@@ -118,8 +118,8 @@ namespace JCP.Ordering.API
 
             var eventBus = serviceProvider.GetRequiredService<IEventBus>();
             eventBus.SetupAsync().GetAwaiter().GetResult();
-            eventBus.SubscribeAsync<CatalogItemAddedIntegrationEvent,
-                                    IIntegrationEventHandler<CatalogItemAddedIntegrationEvent>>()
+            eventBus.SubscribeAsync<ProductAddedIntegrationEvent,
+                                    IIntegrationEventHandler<ProductAddedIntegrationEvent>>()
                                     .GetAwaiter().GetResult();
 
             return services;

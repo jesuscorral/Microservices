@@ -2,7 +2,7 @@
 
 namespace JCP.Catalog.Domain.Model
 { 
-    public class CatalogItem : IEntity
+    public class Product : IEntity
     {
         public Guid Id { get; set; }
 

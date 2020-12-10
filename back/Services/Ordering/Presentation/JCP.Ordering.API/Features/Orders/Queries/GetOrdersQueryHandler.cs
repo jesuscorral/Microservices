@@ -30,8 +30,6 @@ namespace JCP.Ordering.API.Features.Orders.Queries
                 var orderDTO = new OrderDTO
                 {
                     Id = o.Id,
-                    Amount = o.Amount,
-                    Name = o.OrderName
                 };
                 ordersDto.Add(orderDTO);
             }

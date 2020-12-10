@@ -24,13 +24,13 @@ namespace Catalog.API.Controllers
             this.catalogIntegrationEventService = catalogIntegrationEventService;
 
         }
-        [ProducesResponseType(typeof(CatalogItem), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCatalogItem(Guid id)
         {
             // TODO - Pasar a una capa de Business Logic e inyectar la interfaz en el controlador.
-            var catalogItem = await catalogContext.CatalogItems.SingleOrDefaultAsync(i => i.Id == id);
+            var catalogItem = await catalogContext.Products.SingleOrDefaultAsync(i => i.Id == id);
             if (catalogItem == null)
             {
                 return NotFound(new { Message = $"Car with id {id} not found." });
@@ -39,18 +39,18 @@ namespace Catalog.API.Controllers
             return Ok(catalogItem);
         }
 
-        [ProducesResponseType(typeof(CatalogItem), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(Product), (int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CatalogItem catalogItem)
+        public async Task<IActionResult> Add([FromBody] Product catalogItem)
         {
             // TODO - Extraer el saveContext a un repository para aplicar el repository pattern.
             var catalogItemAdded = catalogContext.Add(catalogItem);
             await catalogContext.SaveChangesAsync();
 
-            var catalogItemAddedEvent = new CatalogItemAddedIntegrationEvent(catalogItem);
-            await catalogIntegrationEventService.AddAndSaveEventAsync(catalogItemAddedEvent);
-            await catalogIntegrationEventService.PublishEventsThroughEventBusAsync(catalogItemAddedEvent);
+            var productAddedEvent = new ProductAddedIntegrationEvent(catalogItem);
+            await catalogIntegrationEventService.AddAndSaveEventAsync(productAddedEvent);
+            await catalogIntegrationEventService.PublishEventsThroughEventBusAsync(productAddedEvent);
 
             return Ok(catalogItemAdded.Entity.Id);
             //return CreatedAtAction(nameof(GetCatalogItem), new { id = catalogItemAdded.Entity.Id });

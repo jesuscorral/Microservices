@@ -4,7 +4,7 @@ using JCP.EventBus.Events;
 
 namespace JCP.Catalog.API.IntegrationEvents
 {
-    public class CatalogItemAddedIntegrationEvent : IntegrationEvent
+    public class ProductAddedIntegrationEvent : IntegrationEvent
     {
         public Guid Id { get; set; }
 
@@ -14,12 +14,12 @@ namespace JCP.Catalog.API.IntegrationEvents
 
         public decimal Price { get; set; }
 
-        public CatalogItemAddedIntegrationEvent(CatalogItem catalogItem)
+        public ProductAddedIntegrationEvent(Product product)
         {
-            Id = catalogItem.Id;
-            Name = catalogItem.Name;
-            Description = catalogItem.Description;
-            Price = catalogItem.Price;
+            Id = product.Id;
+            Name = product.Name;
+            Description = product.Description;
+            Price = product.Price;
         }
     }
 }
