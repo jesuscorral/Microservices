@@ -7,3 +7,4 @@ MediatR
 AutoMapper
 Entity Framework Fluent API
 XUnit, FluentAssertions
+CQRS
