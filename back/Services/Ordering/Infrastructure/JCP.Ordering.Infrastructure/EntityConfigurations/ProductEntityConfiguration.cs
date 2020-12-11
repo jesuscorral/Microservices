@@ -11,6 +11,8 @@ namespace JCP.Ordering.Infrastructure.EntityConfigurations
         {
             builder.ToTable<Product>(nameof(Product), OrderDbContext.CATALOG_SCHEMA);
 
+            builder.HasKey(x => x.Id);
+
             builder.Property(ci => ci.Name)
                     .IsRequired(true)
                     .HasMaxLength(50);

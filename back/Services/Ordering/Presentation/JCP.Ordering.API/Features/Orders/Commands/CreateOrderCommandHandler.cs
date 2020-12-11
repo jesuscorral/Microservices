@@ -13,12 +13,12 @@ namespace JCP.Ordering.API.Features.Orders.Commands
     {
         private readonly IOrderRepository orderRepository;
 
-        public CreateOrderCommandHandler(IOrderRepository orderRepository) 
+        public CreateOrderCommandHandler(IOrderRepository orderRepository)
         {
             this.orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
         }
 
-        public async Task<CreateOrderCommandResponse> Handle(CreateOrderCommand request, CancellationToken cancellationToken) 
+        public async Task<CreateOrderCommandResponse> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
             // TODO - Mover la obtencion de los datos del procuto a Catalog.BFF
             // Get products 
@@ -40,7 +40,9 @@ namespace JCP.Ordering.API.Features.Orders.Commands
                     }
                 }
             }
-           
+
+            order.SendDomainEvent();
+
             await orderRepository.SaveOrder(cancellationToken, order);
 
             // TODO - Comprobar cuando el saveOrders falle y devolver un false.

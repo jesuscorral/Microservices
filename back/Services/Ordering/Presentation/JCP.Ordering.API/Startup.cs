@@ -1,5 +1,6 @@
 using System.Reflection;
 using JCP.Ordering.API.Features.Orders.Commands;
+using JCP.Ordering.Domain.DomainEvents;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +22,11 @@ namespace JCP.Ordering.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Register all the Command classes (they implement IRequestHandler) in assembly holding the CreateOrderRequestMV
+
+            services.AddMediatR(typeof(CreateOrderCommand).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(OrderCreatedDomainEvent).GetTypeInfo().Assembly);
+
             services.InjectDependencies();
             services.AddAppConfiguration(Configuration);
             // Add database
@@ -28,8 +34,6 @@ namespace JCP.Ordering.API
             services.AddIntegrationServices();
             services.AddCustomSwagger();
             services.AddControllers();
-            // Register all the Command classes (they implement IRequestHandler) in assembly holding the CreateOrderRequestMV
-            services.AddMediatR(typeof(CreateOrderCommand).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

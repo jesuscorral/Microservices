@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JCP.Ordering.Domain.Common;
+using JCP.Ordering.Domain.DomainEvents;
 
 namespace JCP.Ordering.Domain.Entities
 {
@@ -18,6 +19,11 @@ namespace JCP.Ordering.Domain.Entities
         public Order(List<OrderItem> orderItems)
         {
             this.OrderItems = orderItems;
+        }
+
+        public void SendDomainEvent()
+        {
+            AddDomainEvent(new OrderCreatedDomainEvent(this));
         }
     }
 }

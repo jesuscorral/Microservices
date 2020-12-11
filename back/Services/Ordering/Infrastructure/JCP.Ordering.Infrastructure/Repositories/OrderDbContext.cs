@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using JCP.Ordering.Domain.Common;
 using JCP.Ordering.Domain.Entities;
 using JCP.Ordering.Infrastructure.EntityConfigurations;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace JCP.Ordering.Infrastructure.Repositories
@@ -12,9 +13,12 @@ namespace JCP.Ordering.Infrastructure.Repositories
     {
         public const string ORDERING_SCHEMA = "Ordering";
         public const string CATALOG_SCHEMA = "Catalog";
+        private readonly IMediator Mediator;
 
-        public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options)
+        public OrderDbContext(DbContextOptions<OrderDbContext> options,
+            IMediator mediator) : base(options)
         {
+            this.Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         
         public DbSet<Product> Products { get; set; }
@@ -29,9 +33,18 @@ namespace JCP.Ordering.Infrastructure.Repositories
             builder.ApplyConfiguration(new OrderItemEntityConfiguration());
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+            AddAuditableEntityData();
+
+            await Mediator.DispatchDomainEventsAsync(this);
+
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void AddAuditableEntityData()
+        {
+           foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
             {
                 switch (entry.State)
                 {
@@ -45,8 +58,6 @@ namespace JCP.Ordering.Infrastructure.Repositories
                         break;
                 }
             }
-
-            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

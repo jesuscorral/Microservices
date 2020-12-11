@@ -24,9 +24,9 @@ namespace JCP.Ordering.Api.IntegrationEvents.EventHandlers
         {
             _logger.LogInformation($"Handling integration event: {@event.Id} - ({@event})");
 
-            var orderItem = new Product(@event.Id, @event.Description, @event.Name, @event.Price);
+            var product = new Product(@event.Id, @event.Description, @event.Name, @event.Price);
 
-            await orderingRepository.SaveProduct(orderItem);
+            await orderingRepository.SaveProduct(product);
         }
 
     }
